@@ -1,0 +1,48 @@
+.header {
+    border: 1px solid;
+}
+
+.header__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    height: 50px;
+    text-align: right;
+}
+
+.header__nav-link {
+
+}
+
+.header__nav-link.active {
+    border-bottom: 1px solid;
+}
+
+.header__nav-link + .header__nav-link {
+    margin-left: 25px;
+}
+
+
+.header__user {
+
+}
+
+.header__user-img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.header__user-name {
+    vertical-align: middle;
+}
+
+.header__user-btn-logout {
+    padding: 3px 5px;
+    margin-left: 20px;
+    border: 1px solid #ddd;
+}
