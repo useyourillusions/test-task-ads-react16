@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const UserSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
     firstName: {
         type: String,
         required: true,
@@ -41,7 +40,6 @@ UserSchema.pre('save', function(next) {
 
 UserSchema.methods.comparePassword = password =>
     bcrypt.compareSync(password, this.password);
-
 
 const User = mongoose.model('User', UserSchema);
 

@@ -6,8 +6,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-const Post = require('./database/models/Comment');
-const User = require('./database/models/User');
+const wrongRouteHandler = require('./routes/wrongRoute');
+const registerHandlerPost = require('./routes/post/register');
 
 const app = express();
 
@@ -16,42 +16,11 @@ mongoose.connect(env[mode]['dbUri'] + env[mode]['dbName'], {
     useCreateIndex: true
 })
 .then(
-    () => {
-        console.log('Connected!');
-
-        /*const u = new User({
-            _id: mongoose.Types.ObjectId(),
-            firstName: 'Y.',
-            lastName: 'A.',
-            email: 'aaa',
-            password: '123'
-        });
-
-        u.save(res => console.log(res));*/
-    },
+    () => console.log('Connected!'),
     err => {
         console.log(err.name);
-});
-
-
-
-/*const u = new User({
-    _id: mongoose.Types.ObjectId(),
-    firstName: 'Y.',
-    lastName: 'A.'
-});
-
-const p = new Post({
-    _id: mongoose.Types.ObjectId(),
-    title: 'Title',
-    description: 'Description',
-    content: 'lalala',
-    author: u.id
-});
-
-u.save(() => {
-   p.save();
-});*/
+    }
+);
 
 
 /*Post.create({
@@ -76,25 +45,13 @@ u.save(() => {
 
 app.use(express.static('_public'));
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extend: true }));
 
-app.get('/api/test', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
 
-    setTimeout(() => res.send('200'), 1000);
-});
+// Registration route
+app
+    .route('/api/register')
+    .post(registerHandlerPost);
 
-app.use((req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
-    res.type('application/json');
-    res.status(404);
-    res.send({
-        hasError: true,
-        errorCode: 404,
-        errorMessage: 'Resource not found...'
-    });
-});
 
-app.listen(env[mode].appPort, () => console.log(`Server started at port ${env[mode].appPort}`));
+app.use(wrongRouteHandler);
+app.listen(env[mode]['appPort'], () => console.log(`Server started at port ${env[mode]['appPort']}`));
