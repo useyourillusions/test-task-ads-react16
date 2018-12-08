@@ -1,23 +1,37 @@
 'use strict';
 
-const express = require('express'),
-    app = express(),
-    mongoose = require('mongoose'),
-    Post = require('./database/models/Comment'),
-    User = require('./database/models/User'),
-    bodyParser = require('body-parser');
+const mode = 'dev';
+const env = require('./environment.json');
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
+const Post = require('./database/models/Comment');
+const User = require('./database/models/User');
 
-mongoose.connect('mongodb://localhost/testDb', {
-    useNewUrlParser: true
+const app = express();
+
+mongoose.connect(env[mode]['dbUri'] + env[mode]['dbName'], {
+    useNewUrlParser: true,
+    useCreateIndex: true
 })
-    .then(
-        () => {
-            console.log('Connected!');
-        },
-        fail => {
-            console.log(fail);
-    });
+.then(
+    () => {
+        console.log('Connected!');
+
+        /*const u = new User({
+            _id: mongoose.Types.ObjectId(),
+            firstName: 'Y.',
+            lastName: 'A.',
+            email: 'aaa',
+            password: '123'
+        });
+
+        u.save(res => console.log(res));*/
+    },
+    err => {
+        console.log(err.name);
+});
 
 
 
@@ -48,12 +62,12 @@ u.save(() => {
     //console.log(error, data);
 });*/
 
-Post.find({
+/*Post.find({
     title: 'Title'
 })
 .then(post => post[0].author)
 .then(authorId => User.findById(authorId))
-.then(author => console.log(author));
+.then(author => console.log(author));*/
 
 
 //findByIdAndUpdate
@@ -62,7 +76,7 @@ Post.find({
 
 app.use(express.static('_public'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extend: true }));
+//app.use(bodyParser.urlencoded({ extend: true }));
 
 app.get('/api/test', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -83,6 +97,4 @@ app.use((req, res) => {
     });
 });
 
-app.listen(5000, () => {
-    console.log('Server started at port 5000')
-});
+app.listen(env[mode].appPort, () => console.log(`Server started at port ${env[mode].appPort}`));

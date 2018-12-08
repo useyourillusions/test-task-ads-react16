@@ -1,9 +1,15 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const AdvertisementSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    title: String,
-    text: String,
+    title: {
+        type: String,
+        required: true
+    },
+    text: {
+        type: String,
+        required: true
+    },
     img: {
         type: String,
         default: 'https://dummyimage.com/600x400/000/00ffd5.png'
@@ -14,7 +20,8 @@ const AdvertisementSchema = new mongoose.Schema({
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 });
 
