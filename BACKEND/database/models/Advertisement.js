@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const AdvertisementSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -25,6 +25,6 @@ const AdvertisementSchema = new mongoose.Schema({
     }
 });
 
-const Advertisement = mongoose.model('Comment', AdvertisementSchema);
+const Advertisement = mongoose.model('Advertisement', AdvertisementSchema);
 
 module.exports = Advertisement;

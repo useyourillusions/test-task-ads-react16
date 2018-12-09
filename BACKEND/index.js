@@ -24,26 +24,6 @@ mongoose.connect(env[env.mode]['dbUri'] + env[env.mode]['dbName'], {
 );
 
 
-/*Post.create({
-    title: 'Title_1',
-    description: 'Description_1',
-    content: 'Content_1'
-}, (error, data) => {
-    //console.log(error, data);
-});*/
-
-/*Post.find({
-    title: 'Title'
-})
-.then(post => post[0].author)
-.then(authorId => User.findById(authorId))
-.then(author => console.log(author));*/
-
-
-//findByIdAndUpdate
-//findByIdAndRemove
-//findByIdAndDelete
-
 app.use(express.static('_public'));
 app.use(bodyParser.json());
 app.use(checkForAuthToken);
@@ -61,4 +41,7 @@ app
 
 
 app.use(wrongRouteHandler);
-app.listen(env[env.mode]['appPort'], () => console.log(`Server started at port ${env[env.mode]['appPort']}`));
+app.listen(
+    env[env.mode]['appPort'],
+    () => console.log(`Server started at port ${env[env.mode]['appPort']}`)
+);
