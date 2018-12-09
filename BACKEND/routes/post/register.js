@@ -1,12 +1,6 @@
 const User = require('../../database/models/User');
-const responseSender = (res, code, message) => {
-    res
-        .status(code)
-        .json({
-            code,
-            message
-        })
-};
+const responseSender = require('../../helpers/response-sender');
+
 const registerHandlerPost = async (req, res) => {
 
     if (

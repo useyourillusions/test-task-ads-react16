@@ -7,7 +7,7 @@ const wrongRouteHandler = (req, res) => {
         })
         .json({
             code: 404,
-            errorMessage: 'Resource not found...'
+            message: 'Resource not found...'
         });
 };
 
