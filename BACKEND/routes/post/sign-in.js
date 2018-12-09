@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const env = require('../../environment.json');
-const User = require('../../database/models/User');
+const Users = require('../../database/models/User');
 const responseSender = require('../../helpers/response-sender');
 
 const signInHandlerPost = async (req, res) => {
@@ -9,7 +9,7 @@ const signInHandlerPost = async (req, res) => {
         return responseSender(res, 422, 'We\'ve lost something important...');
     }
 
-    const user = await User.findOne({email: req.body.email});
+    const user = await Users.findOne({email: req.body.email});
 
     if (!user) {
         return responseSender(res, 401, 'Authentication failed. User not found!');

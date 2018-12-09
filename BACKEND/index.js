@@ -9,6 +9,7 @@ const wrongRouteHandler = require('./helpers/wrong-route');
 
 const registerHandlerPost = require('./routes/post/register');
 const signInHandlerPost = require('./routes/post/sign-in');
+const adHandlerGet = require('./routes/get/ad');
 
 const app = express();
 
@@ -38,6 +39,14 @@ app
 app
     .route('/api/sign-in')
     .post(signInHandlerPost);
+
+// Advertisement route
+app
+    .route('/api/ad')
+    .get(adHandlerGet)
+    .post((req, res) => {
+
+    });
 
 
 app.use(wrongRouteHandler);
