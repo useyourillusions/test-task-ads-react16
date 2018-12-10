@@ -17,6 +17,7 @@ const adHandlerPut = require('./routes/put/ad');
 
 const commentsHandlerPost = require('./routes/post/comments');
 const commentsHandlerPut = require('./routes/put/comments');
+const commentsHandlerDelete = require('./routes/delete/comments');
 
 const app = express();
 
@@ -53,7 +54,8 @@ app
 app
     .route('/api/comments')
     .post(loginRequired, commentsHandlerPost)
-    .put(loginRequired, commentsHandlerPut);
+    .put(loginRequired, commentsHandlerPut)
+    .delete(loginRequired, commentsHandlerDelete);
 
 
 app.use(wrongRouteHandler);

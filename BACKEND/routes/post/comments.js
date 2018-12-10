@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const responseSender = require('../../helpers/response-sender');
 const Advertisement = require('../../database/models/Advertisement');
 const Comment = require('../../database/models/Comment');
@@ -23,7 +24,9 @@ const commentsHandlerPost = async (req, res) => {
         return responseSender(res, 500, err.message);
     }
 
+    const _id = new mongoose.Types.ObjectId;
     const commentToSave = new Comment({
+        _id,
         text: req.body.text,
         adId: req.body.adId,
         userId: req.userId
@@ -31,7 +34,7 @@ const commentsHandlerPost = async (req, res) => {
 
     try {
         await commentToSave.save();
-        responseSender(res, 200, 'Your comment has been added!');
+        responseSender(res, 200, 'Your comment has been added!', {_id, text: req.body.text});
 
     } catch (err) {
         responseSender(res, 500, err.message);

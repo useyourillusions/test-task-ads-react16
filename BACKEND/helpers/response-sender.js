@@ -1,9 +1,10 @@
-const responseSender = (res, code, message) => {
+const responseSender = (res, code, message, content = null) => {
     res
         .status(code)
         .json({
             code,
-            message
+            message,
+            content
         })
 };
 

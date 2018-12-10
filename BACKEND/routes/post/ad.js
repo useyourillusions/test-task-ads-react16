@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const responseSender = require('../../helpers/response-sender');
 const Advertisement = require('../../database/models/Advertisement');
 
@@ -11,7 +12,9 @@ const adHandlerPost = async (req, res) => {
         return responseSender(res, 422, 'You\'ve lost something important...');
     }
 
+    const _id = new mongoose.Types.ObjectId;
     const adToCreate = new Advertisement({
+        _id,
         title: req.body.title,
         text: req.body.text,
         userId: req.userId
@@ -19,7 +22,11 @@ const adHandlerPost = async (req, res) => {
 
     try {
         await adToCreate.save();
-        responseSender(res, 200, 'Advertisement has been created!');
+        responseSender(res, 200, 'Advertisement has been created!', {
+            _id,
+            title: req.body.title,
+            text: req.body.text
+        });
 
     } catch (err) {
         responseSender(res, 500, err.message);
