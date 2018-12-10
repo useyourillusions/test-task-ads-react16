@@ -13,10 +13,14 @@ const commentsHandlerPost = async (req, res) => {
     }
 
     try {
-        await Advertisement.findOne({_id: req.body.adId});
+        const adToWriteComment = await Advertisement.findOne({_id: req.body.adId});
+
+        if (!adToWriteComment) {
+            throw new Error('Advertisement not exist!');
+        }
 
     } catch (err) {
-        return responseSender(res, 422, 'Advertisement not exist!');
+        return responseSender(res, 500, err.message);
     }
 
     const commentToSave = new Comment({
@@ -27,7 +31,7 @@ const commentsHandlerPost = async (req, res) => {
 
     try {
         await commentToSave.save();
-        responseSender(res, 422, 'Your comment has been added!');
+        responseSender(res, 200, 'Your comment has been added!');
 
     } catch (err) {
         responseSender(res, 500, err.message);

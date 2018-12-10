@@ -16,6 +16,7 @@ const adHandlerPost = require('./routes/post/ad');
 const adHandlerPut = require('./routes/put/ad');
 
 const commentsHandlerPost = require('./routes/post/comments');
+const commentsHandlerPut = require('./routes/put/comments');
 
 const app = express();
 
@@ -25,10 +26,8 @@ mongoose.connect(env[env.mode]['dbUri'] + env[env.mode]['dbName'], {
     useFindAndModify: false
 })
 .then(
-    () => console.log('Connected!'),
-    err => {
-        console.log(err.name);
-    }
+    () => console.log('Database connection established'),
+    err => console.log(`Database connection error: ${err.name}`)
 );
 
 
@@ -53,7 +52,8 @@ app
 // Comments route
 app
     .route('/api/comments')
-    .post(loginRequired, commentsHandlerPost);
+    .post(loginRequired, commentsHandlerPost)
+    .put(loginRequired, commentsHandlerPut);
 
 
 app.use(wrongRouteHandler);
