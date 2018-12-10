@@ -6,10 +6,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const checkForAuthToken = require('./helpers/check-for-auth-token');
 const wrongRouteHandler = require('./helpers/wrong-route');
+const loginRequired = require('./helpers/login-required');
 
 const registerHandlerPost = require('./routes/post/register');
 const signInHandlerPost = require('./routes/post/sign-in');
 const adHandlerGet = require('./routes/get/ad');
+const adHandlerPost = require('./routes/post/ad');
 
 const app = express();
 
@@ -44,9 +46,7 @@ app
 app
     .route('/api/ad')
     .get(adHandlerGet)
-    .post((req, res) => {
-
-    });
+    .post(loginRequired, adHandlerPost);
 
 
 app.use(wrongRouteHandler);

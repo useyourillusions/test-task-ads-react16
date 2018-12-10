@@ -6,7 +6,7 @@ const responseSender = require('../../helpers/response-sender');
 const signInHandlerPost = async (req, res) => {
 
     if (!req.body.email || !req.body.password) {
-        return responseSender(res, 422, 'We\'ve lost something important...');
+        return responseSender(res, 422, 'You\'ve lost something important...');
     }
 
     const user = await Users.findOne({email: req.body.email});

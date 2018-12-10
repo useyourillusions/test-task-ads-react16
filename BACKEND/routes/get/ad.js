@@ -3,7 +3,7 @@ const Comments = require('../../database/models/Comment');
 const Users = require('../../database/models/User');
 const responseSender = require('../../helpers/response-sender');
 
-const extendCommentsWithAuthor = (comments) =>
+const extendCommentsWithAuthor = comments =>
     comments.map(async item => {
         const commentJson = item.toJSON();
 
@@ -14,7 +14,7 @@ const extendCommentsWithAuthor = (comments) =>
 
             commentJson['author'] = author.toJSON();
 
-        } catch(err) {
+        } catch (err) {
             commentJson['author'] = null;
         }
 
@@ -40,7 +40,7 @@ const adHandlerGet = async (req, res) => {
                 .status(200)
                 .json(dataToSend);
 
-        } catch (err){
+        } catch (err) {
             responseSender(res, 404, 'Advertisement not found!');
         }
 

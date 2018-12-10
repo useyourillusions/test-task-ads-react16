@@ -9,18 +9,23 @@ const registerHandlerPost = async (req, res) => {
         !req.body.email ||
         !req.body.password
     ) {
-        return responseSender(res, 422, 'We\'ve lost something important...');
+        return responseSender(res, 422, 'You\'ve lost something important...');
     }
 
     const user = new Users(req.body);
     const isUserExist = await Users.findOne({email: req.body.email});
 
     if (isUserExist) {
-        return responseSender(res, 409, 'Such email is already registered!');
+        return responseSender(res, 409, 'Email is already registered!');
     }
 
-    await user.save();
-    responseSender(res, 200, 'User has been registered!');
+    try {
+        await user.save();
+        responseSender(res, 200, 'User has been registered!');
+
+    } catch (err) {
+        responseSender(res, 500, err.message);
+    }
 };
 
 module.exports = registerHandlerPost;
