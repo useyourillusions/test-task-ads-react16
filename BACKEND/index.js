@@ -15,6 +15,8 @@ const adHandlerGet = require('./routes/get/ad');
 const adHandlerPost = require('./routes/post/ad');
 const adHandlerPut = require('./routes/put/ad');
 
+const commentsHandlerPost = require('./routes/post/comments');
+
 const app = express();
 
 mongoose.connect(env[env.mode]['dbUri'] + env[env.mode]['dbName'], {
@@ -48,6 +50,10 @@ app
     .post(loginRequired, adHandlerPost)
     .put(loginRequired, adHandlerPut);
 
+// Comments route
+app
+    .route('/api/comments')
+    .post(loginRequired, commentsHandlerPost);
 
 
 app.use(wrongRouteHandler);

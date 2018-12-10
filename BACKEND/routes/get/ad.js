@@ -1,6 +1,6 @@
-const Ads = require('../../database/models/Advertisement');
-const Comments = require('../../database/models/Comment');
-const Users = require('../../database/models/User');
+const Ad = require('../../database/models/Advertisement');
+const User = require('../../database/models/User');
+const Comment = require('../../database/models/Comment');
 const responseSender = require('../../helpers/response-sender');
 
 const extendCommentsWithAuthor = comments =>
@@ -8,9 +8,9 @@ const extendCommentsWithAuthor = comments =>
         const commentJson = item.toJSON();
 
         try {
-            const author = await Users
+            const author = await User
                 .findOne({_id: item.userId})
-                .select('firstName lastName photo');
+                .select('firstName lastName photo -_id');
 
             commentJson['author'] = author.toJSON();
 
@@ -18,23 +18,28 @@ const extendCommentsWithAuthor = comments =>
             commentJson['author'] = null;
         }
 
+        delete commentJson['userId'];
+
         return commentJson;
     });
+
 
 const adHandlerGet = async (req, res) => {
 
     if (req.query.id) {
         try {
-            const ads = await Ads
+            const ads = await Ad
                 .findOne({_id: req.query.id})
-                .select('-userId -__v');
+                .select('-_id -userId -__v');
 
             const dataToSend = ads.toJSON();
-            const relatedComments = await Comments
+            const relatedComments = await Comment
                 .find({adId: req.query.id})
-                .select('-userId -adId');
+                .select('-adId -__v');
 
-            dataToSend['comments'] = extendCommentsWithAuthor(relatedComments);
+            dataToSend['comments'] = await Promise.all(
+                extendCommentsWithAuthor(relatedComments)
+            );
 
             res
                 .status(200)
@@ -45,8 +50,8 @@ const adHandlerGet = async (req, res) => {
         }
 
     } else {
-        const dataToSend = await Ads
-            .find({})
+        const dataToSend = await Ad
+            .find()
             .select('-userId -__v');
 
             res
