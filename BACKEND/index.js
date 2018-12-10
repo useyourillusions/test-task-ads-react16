@@ -10,14 +10,17 @@ const loginRequired = require('./helpers/login-required');
 
 const registerHandlerPost = require('./routes/post/register');
 const signInHandlerPost = require('./routes/post/sign-in');
+
 const adHandlerGet = require('./routes/get/ad');
 const adHandlerPost = require('./routes/post/ad');
+const adHandlerPut = require('./routes/put/ad');
 
 const app = express();
 
 mongoose.connect(env[env.mode]['dbUri'] + env[env.mode]['dbName'], {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 })
 .then(
     () => console.log('Connected!'),
@@ -33,20 +36,18 @@ app.use(checkForAuthToken);
 
 
 // Registration route
-app
-    .route('/api/register')
-    .post(registerHandlerPost);
+app.post('/api/register', registerHandlerPost);
 
 // Authentication route
-app
-    .route('/api/sign-in')
-    .post(signInHandlerPost);
+app.post('/api/sign-in', signInHandlerPost);
 
 // Advertisement route
 app
     .route('/api/ad')
     .get(adHandlerGet)
-    .post(loginRequired, adHandlerPost);
+    .post(loginRequired, adHandlerPost)
+    .put(loginRequired, adHandlerPut);
+
 
 
 app.use(wrongRouteHandler);

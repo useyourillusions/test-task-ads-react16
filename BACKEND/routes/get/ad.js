@@ -27,7 +27,7 @@ const adHandlerGet = async (req, res) => {
         try {
             const ads = await Ads
                 .findOne({_id: req.query.id})
-                .select('-_id -userId -__v');
+                .select('-userId -__v');
 
             const dataToSend = ads.toJSON();
             const relatedComments = await Comments
@@ -47,7 +47,7 @@ const adHandlerGet = async (req, res) => {
     } else {
         const dataToSend = await Ads
             .find({})
-            .select('-_id -userId -__v');
+            .select('-userId -__v');
 
             res
                 .status(200)
