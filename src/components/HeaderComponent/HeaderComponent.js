@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
-import { signInLogout } from '../../actions/SignInAction';
+import { authLogout } from '../../actions/authAction';
 import './HeaderComponent.css';
 
 const LoggedStatus = ({props}) => {
@@ -30,10 +30,6 @@ const LoggedStatus = ({props}) => {
 };
 
 class HeaderComponent extends Component {
-    componentDidMount() {
-        console.log('HeaderComponent Mounted', this.props);
-    }
-
     render() {
         return (
             <header className="header" onClick={this.props.test}>
@@ -50,7 +46,7 @@ class HeaderComponent extends Component {
 
 const mapStateToProps = ({userData}) => ({userData});
 const mapDispatchToProps = (dispatch) => ({
-    logout: (data) => dispatch(signInLogout(data))
+    logout: (data) => dispatch(authLogout(data))
 });
 
 export default withRouter(

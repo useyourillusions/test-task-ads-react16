@@ -2,22 +2,22 @@ const initialState = {
     isLoggedIn: false,
     personalInfo: {},
     isOnProcess: false,
-    errorData: {
+    /*errorData: {
         hasError: false,
         errorCode: null,
         errorMessage: null
-    },
+    },*/
 };
 
 const userData = (state = initialState, action) => {
     switch(action.type) {
-        case 'SIGN-IN_PROCESS': {
+        case 'AUTH_PROCESS': {
             return {
                 ...state,
                 isOnProcess: action.payload,
             }
         }
-        case 'SIGN-IN_SUCCESS': {
+        case 'AUTH_SUCCESS': {
             return {
                 ...state,
                 isLoggedIn: true,
@@ -25,14 +25,7 @@ const userData = (state = initialState, action) => {
                 personalInfo: action.payload
             }
         }
-        case 'SIGN-IN_ERROR': {
-            return {
-                ...state,
-                isOnProcess: false,
-                errorData: action.payload
-            }
-        }
-        case 'SIGN-IN_LOGOUT': {
+        case 'AUTH_LOGOUT': {
             return {
                 ...state,
                 isLoggedIn: false,

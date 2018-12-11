@@ -7,7 +7,7 @@ import HomeComponent from './components/HomeComponent/HomeComponent';
 import HeaderComponent from './components/HeaderComponent/HeaderComponent';
 import SingleAdComponent from './components/SingleAdComponent/SingleAdComponent';
 import RegisterComponent from './components/RegisterComponent/RegisterComponent';
-import SignInComponent from './components/SignInComponent/SignInComponent';
+import authComponent from './components/AuthComponent/AuthComponent';
 
 //STATELESS
 const Error = () => {
@@ -32,7 +32,7 @@ class App extends Component {
                         <Route path="/" component={HomeComponent} exact />
                         <Route path="/ads/:ad" component={SingleAdComponent} />
                         <Route path="/register" component={RegisterComponent} />
-                        <Route path="/sign-in" component={SignInComponent} />
+                        <Route path="/sign-in" component={authComponent} />
                         <Route path="/test" render={
                             () => this.state.isLoggedIn ? (<div>Test Component</div>) : (<Redirect to='/' />)
                         } />

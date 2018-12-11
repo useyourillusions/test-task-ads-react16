@@ -8,11 +8,6 @@ const singleAdLoading = bool => ({
     payload: bool
 });
 
-const singleAdError = object => ({
-    type: 'SINGLE-AD_LOADING_ERROR',
-    payload: object
-});
-
 const getSingleAd = id => {
     return dispatch => {
         dispatch(singleAdLoading(true));

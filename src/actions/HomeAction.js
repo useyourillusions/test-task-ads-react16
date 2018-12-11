@@ -8,11 +8,6 @@ const shortAdsLoading = bool => ({
     payload: bool
 });
 
-const shortAdsError = object => ({
-    type: 'SHORT-ADS_LOADING_ERROR',
-    payload: object
-});
-
 const getShortAds = () => {
     return dispatch => {
         dispatch(shortAdsLoading(true));

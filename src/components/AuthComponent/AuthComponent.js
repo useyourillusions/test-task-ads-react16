@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sendData } from '../../actions/SignInAction';
+import { sendData } from '../../actions/authAction';
 import { Redirect } from 'react-router-dom'
-import './SignInComponent.css';
+import './AuthComponent.css';
 
 
-class SignInComponent extends Component {
+class AuthComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -21,9 +21,10 @@ class SignInComponent extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.userData.isLoggedIn !== this.props.userData.isLoggedIn &&
-            prevProps.userData.isOnProcess !== this.props.userData.isOnProcess) {
-
+        if (
+            prevProps.userData.isLoggedIn !== this.props.userData.isLoggedIn &&
+            prevProps.userData.isOnProcess !== this.props.userData.isOnProcess
+        ) {
             this.setState({
                 userData: {
                     email: '',
@@ -41,7 +42,7 @@ class SignInComponent extends Component {
             return;
         }
 
-        this.props.sendData(this.state.userData);
+        this.props.sendAuthData(this.state.userData);
     }
 
     onFillInput(e) {
@@ -90,7 +91,7 @@ class SignInComponent extends Component {
 
 const mapStateToProps = ({userData}) => ({userData});
 const mapDispatchToProps = (dispatch) => ({
-    sendData: (data) => dispatch(sendData(data))
+    sendAuthData: (data) => dispatch(sendData(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignInComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthComponent);
