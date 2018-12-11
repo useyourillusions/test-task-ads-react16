@@ -25,8 +25,8 @@ const extendCommentsWithAuthor = comments =>
 
 
 const adHandlerGet = async (req, res) => {
-
     if (req.query.id) {
+
         try {
             const ads = await Ad
                 .findOne({_id: req.query.id})

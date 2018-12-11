@@ -1,4 +1,4 @@
-const Users = require('../../database/models/User');
+const User = require('../../database/models/User');
 const responseSender = require('../../helpers/response-sender');
 
 const registerHandlerPost = async (req, res) => {
@@ -9,11 +9,11 @@ const registerHandlerPost = async (req, res) => {
         !req.body.email ||
         !req.body.password
     ) {
-        return responseSender(res, 422, 'You\'ve lost something important...');
+        return responseSender(res, 422, 'You\'ve missed something important...');
     }
 
-    const user = new Users(req.body);
-    const isUserExist = await Users.findOne({email: req.body.email});
+    const user = new User(req.body);
+    const isUserExist = await User.findOne({email: req.body.email});
 
     if (isUserExist) {
         return responseSender(res, 409, 'Email is already registered!');

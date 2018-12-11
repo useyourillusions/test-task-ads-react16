@@ -8,7 +8,7 @@ const commentsHandlerPut = async (req, res) => {
         !req.body.text ||
         !req.userId
     ) {
-        return responseSender(res, 422, 'You\'ve lost something important...');
+        return responseSender(res, 422, 'You\'ve missed something important...');
     }
 
     try {

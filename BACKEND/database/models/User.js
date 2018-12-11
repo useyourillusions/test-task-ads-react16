@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const validateEmail = email =>
+    /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
 const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -17,7 +20,8 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        trim: true
+        trim: true,
+        validate: [validateEmail],
     },
     password:  {
         type: String,

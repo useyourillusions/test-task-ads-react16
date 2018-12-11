@@ -1,16 +1,15 @@
 const Comment = require('../../database/models/Comment');
 const responseSender = require('../../helpers/response-sender');
-const mongoose = require('mongoose');
 
 const commentsHandlerDelete = async (req, res) => {
 
-    if (!req.query.id || !req.userId) {
-        return responseSender(res, 422, 'You\'ve lost something important...');
+    if (!req.params.id || !req.userId) {
+        return responseSender(res, 422, 'You\'ve missed something important...');
     }
 
     try {
         const deletedComment = await Comment
-            .findOneAndRemove({_id: req.query.id, userId: req.userId});
+            .findOneAndRemove({ _id: req.params.id, userId: req.userId });
 
         if (!deletedComment) {
             throw new Error('Comment hasn\'t been deleted!');

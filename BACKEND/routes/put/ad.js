@@ -11,7 +11,7 @@ const adHandlerPut = async (req, res) => {
         !req.body.text ||
         !req.userId
     ) {
-        return responseSender(res, 422, 'You\'ve lost something important...');
+        return responseSender(res, 422, 'You\'ve missed something important...');
     }
 
     if (req.body.title.newValue) {
@@ -26,14 +26,14 @@ const adHandlerPut = async (req, res) => {
         try {
             await Advertisement
                 .findOneAndUpdate({ _id: req.body.id }, dataToUpdate);
-            responseSender(res, 200, 'Your advertisement has been updated!');
+            responseSender(res, 200, 'Your advertisement has been edited!');
 
         } catch (err) {
             responseSender(res, 500, err.message);
         }
 
     } else {
-        responseSender(res, 200, 'Nothing came — nothing happened...');
+        responseSender(res, 200, 'Nothing came — nothing changed...');
     }
 };
 

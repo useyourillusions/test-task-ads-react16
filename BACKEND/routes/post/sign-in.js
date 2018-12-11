@@ -6,7 +6,7 @@ const responseSender = require('../../helpers/response-sender');
 const signInHandlerPost = async (req, res) => {
 
     if (!req.body.email || !req.body.password) {
-        return responseSender(res, 422, 'You\'ve lost something important...');
+        return responseSender(res, 422, 'You\'ve missed something important...');
     }
 
     const user = await Users.findOne({email: req.body.email});
@@ -25,17 +25,14 @@ const signInHandlerPost = async (req, res) => {
         { expiresIn: '1h' }
     );
 
-
-    res
-        .status(200)
-        .json({
-            user: {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                photo: user.photo
-            },
-            token
-        });
+    responseSender(res, 200, 'Authentication succeeded!', {
+        user: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            photo: user.photo
+        },
+        token
+    });
 };
 
 module.exports = signInHandlerPost;

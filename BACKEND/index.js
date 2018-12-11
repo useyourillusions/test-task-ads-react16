@@ -1,6 +1,7 @@
 'use strict';
 
 const env = require('./environment.json');
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -32,6 +33,7 @@ mongoose.connect(env[env.mode]['dbUri'] + env[env.mode]['dbName'], {
 );
 
 
+app.use(cors());
 app.use(express.static('_public'));
 app.use(bodyParser.json());
 app.use(checkForAuthToken);
@@ -52,7 +54,7 @@ app
 
 // Comments route
 app
-    .route('/api/comments')
+    .route('/api/comments/:id?')
     .post(loginRequired, commentsHandlerPost)
     .put(loginRequired, commentsHandlerPut)
     .delete(loginRequired, commentsHandlerDelete);

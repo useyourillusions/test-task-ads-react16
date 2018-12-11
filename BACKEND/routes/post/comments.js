@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const responseSender = require('../../helpers/response-sender');
 const Advertisement = require('../../database/models/Advertisement');
 const Comment = require('../../database/models/Comment');
@@ -10,7 +9,7 @@ const commentsHandlerPost = async (req, res) => {
         !req.body.adId ||
         !req.userId
     ) {
-        return responseSender(res, 422, 'You\'ve lost something important...');
+        return responseSender(res, 422, 'You\'ve missed something important...');
     }
 
     try {
@@ -24,17 +23,20 @@ const commentsHandlerPost = async (req, res) => {
         return responseSender(res, 500, err.message);
     }
 
-    const _id = new mongoose.Types.ObjectId;
     const commentToSave = new Comment({
-        _id,
         text: req.body.text,
         adId: req.body.adId,
         userId: req.userId
     });
 
     try {
-        await commentToSave.save();
-        responseSender(res, 200, 'Your comment has been added!', {_id, text: req.body.text});
+        const savedComment = await commentToSave.save();
+
+        responseSender(res, 200, 'Your comment has been added!', {
+            _id: savedComment._id,
+            text: savedComment.text,
+            created: savedComment.created
+        });
 
     } catch (err) {
         responseSender(res, 500, err.message);

@@ -1,11 +1,15 @@
 const responseSender = (res, code, message, content = null) => {
-    res
-        .status(code)
-        .json({
-            code,
-            message,
-            content
-        })
+
+    const objToSend = {
+        code,
+        message
+    };
+
+    if (content) {
+        objToSend['content'] = content;
+    }
+
+    res.status(code).json(objToSend);
 };
 
 module.exports = responseSender;
