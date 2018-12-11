@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import errorHandler from '../../helpers/httpErrorHandler';
+import env from '../../environment';
 import './RegisterComponent.css';
-
 
 class RegisterComponent extends Component {
     constructor(props) {
@@ -28,29 +30,46 @@ class RegisterComponent extends Component {
         e.preventDefault();
         const {passConf, ...dataToSend} = this.state.user;
 
-        if (this.state.user.password !== this.state.user.passConf) {
+        if (
+            !this.state.user.password.length ||
+            this.state.user.password !== this.state.user.passConf
+        ) {
             alert('Passwords don\'t match');
             return;
         }
 
-        console.log(dataToSend);
         this.setState({
             isFormSending: true
         });
 
-        setTimeout(() => {
-            this.setState({
-                isFormSending: false,
-                user: {
-                    firstName: '',
-                    lastName: '',
-                    email: '',
-                    password: '',
-                    passConf: ''
+        axios
+            .post(
+                `${env.api.uri}:${env.api.port}/${env.api.registerRoute}`,
+                dataToSend
+            )
+            .then(
+                res => {
+                    const data = res.data;
+
+                    if (data.code === 200) {
+                        this.setState({
+                            isFormSending: false,
+                            user: {
+                                firstName: '',
+                                lastName: '',
+                                email: '',
+                                password: '',
+                                passConf: ''
+                            }
+                        });
+                        this.props.history.push(`/sign-in`);
+                    }
                 }
+            )
+            .catch(err => {
+                errorHandler(err);
+                this.setState({isFormSending: false});
             });
-            this.props.history.push(`/sign-in`);
-        }, 2000);
     }
 
     onFillInput(e) {
@@ -61,7 +80,6 @@ class RegisterComponent extends Component {
             }
         });
     }
-
 
     render() {
         return (

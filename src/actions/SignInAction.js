@@ -1,3 +1,5 @@
+import environment from '../environment';
+
 const signInProcess = bool => ({
     type: 'SIGN-IN_PROCESS',
     payload: bool
@@ -19,6 +21,7 @@ const signInLogout = () => ({
 
 const sendData = data => (
     dispatch => {
+        console.log(environment);
         const userData = {
             id: 1,
             firstName: 'John',
