@@ -5,6 +5,7 @@ const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const checkDbConnection = require('./helpers/check-db-connection');
 const checkForAuthToken = require('./helpers/check-for-auth-token');
 const wrongRouteHandler = require('./helpers/wrong-route');
 const loginRequired = require('./helpers/login-required');
@@ -35,6 +36,7 @@ mongoose.connect(env[env.mode]['dbUri'] + env[env.mode]['dbName'], {
 
 app.use(cors());
 app.use(express.static('_public'));
+app.use(checkDbConnection);
 app.use(bodyParser.json());
 app.use(checkForAuthToken);
 
