@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import http from '../../helpers/AxiosCustomInstance';
 import errorHandler from '../../helpers/httpErrorHandler';
-import env from '../../environment';
 import './RegisterComponent.css';
 
 class RegisterComponent extends Component {
@@ -22,10 +21,6 @@ class RegisterComponent extends Component {
         this.onFillInput = this.onFillInput.bind(this);
     }
 
-    componentDidMount() {
-        console.log('RegisterComponent Mounted', this.props);
-    }
-
     registerUser(e) {
         e.preventDefault();
         const {passConf, ...dataToSend} = this.state.user;
@@ -42,34 +37,26 @@ class RegisterComponent extends Component {
             isFormSending: true
         });
 
-        axios
-            .post(
-                `${env.api.uri}:${env.api.port}/${env.api.registerRoute}`,
-                dataToSend
-            )
+        http.register(dataToSend)
             .then(
-                res => {
-                    const data = res.data;
-
-                    if (data.code === 200) {
-                        this.setState({
-                            isFormSending: false,
-                            user: {
-                                firstName: '',
-                                lastName: '',
-                                email: '',
-                                password: '',
-                                passConf: ''
-                            }
-                        });
-                        this.props.history.push(`/sign-in`);
-                    }
+                () => {
+                    this.setState({
+                        isFormSending: false,
+                        user: {
+                            firstName: '',
+                            lastName: '',
+                            email: '',
+                            password: '',
+                            passConf: ''
+                        }
+                    });
+                    this.props.history.push(`/sign-in`);
+                },
+                err => {
+                    console.log(errorHandler(err));
+                    this.setState({isFormSending: false});
                 }
             )
-            .catch(err => {
-                errorHandler(err);
-                this.setState({isFormSending: false});
-            });
     }
 
     onFillInput(e) {

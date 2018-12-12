@@ -3,17 +3,16 @@ const initialState = {
     data: []
 };
 
-const shortAds = (state = initialState, action) => {
+const allAds = (state = initialState, action) => {
     switch(action.type) {
-        case 'SHORT-ADS_LOADING': {
+        case 'ALL-ADS_LOADING': {
             return {
                 ...state,
                 isLoading: action.payload
             }
         }
-        case 'SHORT-ADS_LOADED': {
+        case 'ALL-ADS_LOADED': {
             return {
-                ...state,
                 isLoading: false,
                 data: action.payload
             }
@@ -23,4 +22,4 @@ const shortAds = (state = initialState, action) => {
     }
 };
 
-export default shortAds;
+export default allAds;

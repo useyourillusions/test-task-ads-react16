@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import shortAds from './HomeReducer';
+import allAds from './AllAdsReducer';
 import singleAd from './SingleAdReducer';
 import comments from './CommentsReducer';
 import userData from './AuthReducer'
 
 export default combineReducers({
-    shortAds,
+    allAds,
     singleAd,
     comments,
     userData

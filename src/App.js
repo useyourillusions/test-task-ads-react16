@@ -30,7 +30,7 @@ class App extends Component {
                     <HeaderComponent/>
                     <Switch>
                         <Route path="/" component={HomeComponent} exact />
-                        <Route path="/ads/:ad" component={SingleAdComponent} />
+                        <Route path="/ad/:ad" component={SingleAdComponent} />
                         <Route path="/register" component={RegisterComponent} />
                         <Route path="/sign-in" component={authComponent} />
                         <Route path="/test" render={

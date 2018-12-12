@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sendData } from '../../actions/authAction';
+import { sendData } from '../../actions/AuthAction';
 import { Redirect } from 'react-router-dom'
 import './AuthComponent.css';
 

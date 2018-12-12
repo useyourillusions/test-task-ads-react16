@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { getShortAds } from '../../actions/HomeAction';
+import { getAllAds } from '../../actions/AllAdsAction';
 import PropTypes from 'prop-types';
 import './HomeComponent.css';
 
 class HomeComponent extends Component {
     componentDidMount() {
-        this.props.getShortAds();
+        this.props.getAllAds();
     }
 
     render() {
-        if (this.props.shortAds.isLoading) {
+        if (this.props.allAds.isLoading) {
             return (
                 <section className="s-ads">
                     <div className="container">
@@ -26,17 +26,14 @@ class HomeComponent extends Component {
                 <div className="container">
                     <ul className="l-ads">
                         {
-                            this.props.shortAds.data.map((item, i) => (
+                            this.props.allAds.data.map((item, i) => (
                                 <li className="l-ads__item" key={i}>
-                                    <NavLink to={`ads/${i}`} className="l-ads__item-img-link">
-                                        <img src="https://dummyimage.com/600x400/000/00ffd5.png" className="l-ads__item-img" alt="" />
+                                    <NavLink to={`ad/${item._id}`} className="l-ads__item-img-link">
+                                        <img src={item.img} className="l-ads__item-img" alt={item.title} />
                                     </NavLink>
-                                    <h4 className="l-ads__item-title">Default title {i + 1}</h4>
-                                    <p className="l-ads__item-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur, dolor dolorem enim eum eveniet
-                                        expedita facilis molestiae natus nesciunt porro quos ratione ullam velit, voluptate voluptatem.
-                                        Accusamus commodi eos quia quo. Assumenda consequuntur debitis dolor dolorem ea eaque est ex labore
-                                        natus obcaecati odit officia pariatur perferendis praesentium, quod voluptatum.</p>
-                                    <NavLink to={`ads/${i}`} className="l-ads__item-link">Read more</NavLink>
+                                    <h4 className="l-ads__item-title">{item.title}</h4>
+                                    <p className="l-ads__item-text">{item.text}</p>
+                                    <NavLink to={`ad/${item._id}`} className="l-ads__item-link">Read more</NavLink>
                                 </li>
                             ))
                         }
@@ -47,9 +44,9 @@ class HomeComponent extends Component {
     }
 }
 
-const mapStateToProps = ({shortAds}) => ({shortAds});
+const mapStateToProps = ({allAds}) => ({allAds});
 const mapDispatchToProps = (dispatch) => ({
-    getShortAds: () => dispatch(getShortAds())
+    getAllAds: () => dispatch(getAllAds())
 });
 
 HomeComponent.propTtypes = {

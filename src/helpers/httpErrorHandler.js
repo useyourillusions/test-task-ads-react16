@@ -1,6 +1,16 @@
 const errorHandler = res => {
-    const data = res.response.data;
-    alert(data.message);
+    let data = {};
+
+    try {
+        data = res.response.data;
+        alert(data.message);
+
+    } catch (err) {
+        data = {
+            code: 0,
+            message: err.message
+        }
+    }
 
     return data;
 };

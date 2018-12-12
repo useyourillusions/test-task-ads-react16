@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
-import { authLogout } from '../../actions/authAction';
+import { authLogout } from '../../actions/AuthAction';
 import './HeaderComponent.css';
 
 const LoggedStatus = ({props}) => {
