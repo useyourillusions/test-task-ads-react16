@@ -1,5 +1,5 @@
 import errorHandler from '../helpers/httpErrorHandler';
-import http from '../helpers/AxiosCustomInstance';
+import http from '../helpers/axiosCustomInstance';
 
 const authProcess = bool => ({
     type: 'AUTH_PROCESS',

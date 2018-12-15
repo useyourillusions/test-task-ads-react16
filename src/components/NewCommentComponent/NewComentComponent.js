@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postComment } from '../../../actions/CommentsAction';
+import { postComment } from '../../actions/CommentsAction';
 
 class NewCommentComponent extends Component {
     constructor(props) {

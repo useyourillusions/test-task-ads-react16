@@ -1,13 +1,13 @@
 const initialState = {
     isLoading: false,
     isSending: false,
-    errorData: {
-        hasError: false,
-        errorCode: null,
-        errorMessage: null
-    },
     data: []
 };
+
+const mapRemoved = id => (
+    item => item._id !== id
+);
+
 
 const comments = (state = initialState, action) => {
     switch(action.type) {
@@ -20,15 +20,7 @@ const comments = (state = initialState, action) => {
         case 'COMMENTS_LOADED': {
             return {
                 ...state,
-                isLoading: false,
                 data: action.payload
-            }
-        }
-        case 'COMMENTS_LOADING_ERROR': {
-            return {
-                ...state,
-                isLoading: false,
-                errorData: action.payload
             }
         }
         case 'COMMENT_SENDING': {
@@ -37,7 +29,7 @@ const comments = (state = initialState, action) => {
                 isSending: action.payload
             }
         }
-        case 'DISPLAY_NEW_COMMENT': {
+        case 'COMMENT_DISPLAY_NEW': {
             return {
                 ...state,
                 isSending: false,

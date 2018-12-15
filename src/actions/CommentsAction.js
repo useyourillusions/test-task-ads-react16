@@ -1,50 +1,15 @@
+import http from '../helpers/axiosCustomInstance';
+import errorHandler from '../helpers/httpErrorHandler';
+
 const commentsLoaded = array => ({
     type: 'COMMENTS_LOADED',
     payload: array
 });
 
-const commentsLoading = bool => ({
-    type: 'COMMENTS_LOADING',
-    payload: bool
+const commentRemoved = string => ({
+    type: 'COMMENT_REMOVED',
+    payload: string
 });
-
-const commentsError = object => ({
-    type: 'COMMENTS_LOADING_ERROR',
-    payload: object
-});
-
-const getComments = () => (
-    dispatch => {
-        dispatch(commentsLoading(true));
-
-        setTimeout(() => {
-            const arr = [
-                {
-                    user: {
-                        img: 'https://dummyimage.com/300x300/000/ff7800.png',
-                        name: 'John Doe'
-                    },
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aspernatur aut consequatur debitis, deleniti distinctio facilis ipsam, iste libero maiores mollitia, nam natus nemo nobis obcaecati provident quaerat quidem voluptate!'
-                },
-                {
-                    user: {
-                        img: 'https://dummyimage.com/300x300/000/ff7800.png',
-                        name: 'John Doe'
-                    },
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aspernatur aut consequatur debitis, deleniti distinctio facilis ipsam, iste libero maiores mollitia, nam natus nemo nobis obcaecati provident quaerat quidem voluptate!'
-                },
-                {
-                    user: {
-                        img: 'https://dummyimage.com/300x300/000/ff7800.png',
-                        name: 'John Doe'
-                    },
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid aspernatur aut consequatur debitis, deleniti distinctio facilis ipsam, iste libero maiores mollitia, nam natus nemo nobis obcaecati provident quaerat quidem voluptate!'
-                }
-            ];
-            dispatch(commentsLoaded(arr));
-        }, 2000);
-    }
-);
 
 const commentSending = bool => ({
     type: 'COMMENT_SENDING',
@@ -52,7 +17,7 @@ const commentSending = bool => ({
 });
 
 const displayNewComment = obj => ({
-    type: 'DISPLAY_NEW_COMMENT',
+    type: 'COMMENT_DISPLAY_NEW',
     payload: obj
 });
 
@@ -65,4 +30,17 @@ const postComment = comment => (
     }
 );
 
-export { commentsLoaded, commentsLoading, getComments, postComment };
+const saveEdited = data => (
+    dispatch => {
+        console.log(data);
+    }
+);
+
+const removeComment = id => (
+    dispatch => {
+        console.log(id);
+        dispatch(commentRemoved(id));
+    }
+);
+
+export { commentsLoaded, postComment, saveEdited, removeComment };

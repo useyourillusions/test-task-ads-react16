@@ -1,0 +1,31 @@
+.b-comment-area {
+    width: 100%;
+}
+
+.b-comment-area__actions {
+    margin-bottom: 10px;
+    text-align: right;
+}
+
+.b-comment-area__actions-btn {
+    border: 1px solid #ddd;
+}
+
+.b-comment-area__actions-btn + .b-comment-area__actions-btn {
+    margin-left: 10px;
+}
+
+
+.b-comment-area__textarea {
+    width: 100%;
+}
+
+.b-comment-area__text {
+    line-height: 1.4;
+    text-align: justify;
+}
+
+.b-comment-area__btn-save {
+    margin-top: 10px;
+    border: 1px solid lightgreen;
+}

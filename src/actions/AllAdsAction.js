@@ -1,4 +1,4 @@
-import http from '../helpers/AxiosCustomInstance';
+import http from '../helpers/axiosCustomInstance';
 import errorHandler from '../helpers/httpErrorHandler';
 
 const allAdsLoaded = array => ({

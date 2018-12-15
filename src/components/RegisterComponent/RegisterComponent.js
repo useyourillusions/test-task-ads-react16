@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import http from '../../helpers/AxiosCustomInstance';
+import http from '../../helpers/axiosCustomInstance';
 import errorHandler from '../../helpers/httpErrorHandler';
 import './RegisterComponent.css';
 

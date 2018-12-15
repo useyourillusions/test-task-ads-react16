@@ -69,7 +69,6 @@
 
 .l-comments__item {
     display: flex;
-    align-items: center;
     border: 1px solid #ddd;
 }
 
@@ -79,23 +78,21 @@
 
 .l-comments__user {
     flex-shrink: 0;
-    margin-right: 35px;
+    width: 110px;
+    margin-right: 25px;
+    text-align: center;
 }
 
 .l-comments__user-img {
-    width: 85px;
-    height: 85px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
 }
 
 .l-comments__user-name {
     display: block;
-    text-align: center;
     margin-top: 10px;
-}
-
-.l-comments__text {
-    line-height: 1.4;
-    text-align: justify;
+    font-size: 1.2rem;
+    letter-spacing: .08em;
 }
