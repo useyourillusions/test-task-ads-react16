@@ -6,22 +6,37 @@ const commentsLoaded = array => ({
     payload: array
 });
 
-const commentRemoved = string => ({
-    type: 'COMMENT_REMOVED',
-    payload: string
-});
-
 const commentSending = bool => ({
     type: 'COMMENT_SENDING',
     payload: bool
 });
 
 const displayNewComment = obj => ({
-    type: 'COMMENT_DISPLAY_NEW',
+    type: 'COMMENT_SENT',
     payload: obj
 });
 
-const postComment = comment => (
+const commentUpdating = bool => ({
+    type: 'COMMENT_UPDATING',
+    payload: bool
+});
+
+const commentUpdated = obj => ({
+    type: 'COMMENT_UPDATED',
+    payload: obj
+});
+
+const commentRemoving = bool => ({
+    type: 'COMMENT_REMOVING',
+    payload: bool
+});
+
+const commentRemoved = string => ({
+    type: 'COMMENT_REMOVED',
+    payload: string
+});
+
+const sendComment = comment => (
     dispatch => {
         dispatch(commentSending(true));
         setTimeout(() => {
@@ -30,17 +45,39 @@ const postComment = comment => (
     }
 );
 
-const saveEdited = data => (
+const updateComment = (data, cb) => (
     dispatch => {
-        console.log(data);
+        dispatch(commentUpdating(true));
+        http.updateComment(data)
+            .then(
+                res => {
+                    console.log(res);
+                    dispatch(commentUpdated(data));
+                    cb();
+                },
+                err => {
+                    dispatch(commentUpdating(false));
+                    console.log(errorHandler(err));
+                }
+            );
     }
 );
 
 const removeComment = id => (
     dispatch => {
-        console.log(id);
-        dispatch(commentRemoved(id));
+        dispatch(commentRemoving(true));
+        http.removeComment(id)
+            .then(
+                res => {
+                    console.log(res);
+                    dispatch(commentRemoved(id));
+                },
+                err => {
+                    commentRemoving(false);
+                    console.log(errorHandler(err));
+                }
+            );
     }
 );
 
-export { commentsLoaded, postComment, saveEdited, removeComment };
+export { commentsLoaded, sendComment, updateComment, removeComment };

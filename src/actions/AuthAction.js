@@ -22,10 +22,10 @@ const sendData = dataToSend => (
         http.signIn(dataToSend)
             .then(
                 res => {
-                    const data = res.data;
+                    const { token, user } = res.data.content;
 
-                    localStorage.setItem('token', data.content.token);
-                    dispatch(authSuccess(data.content.user));
+                    localStorage.setItem('token', token);
+                    dispatch(authSuccess(user));
                 },
                 err => {
                     dispatch(authProcess(false));

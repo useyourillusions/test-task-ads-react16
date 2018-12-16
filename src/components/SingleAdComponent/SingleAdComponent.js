@@ -24,7 +24,7 @@ const CommentsList = ({comments}) => {
                                     {`${comment.author.firstName} ${comment.author.lastName}`}
                                 </span>
                             </div>
-                            <CommentAreaComponent comment={comment} />
+                            <CommentAreaComponent currentComment={comment} />
                         </li>
                     ))
                 }

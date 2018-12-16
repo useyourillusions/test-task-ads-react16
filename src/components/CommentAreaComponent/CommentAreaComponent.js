@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { updateComment, removeComment } from "../../actions/CommentsAction";
 import './CommentAreaComponent.css';
-import { saveEdited, removeComment } from "../../actions/CommentsAction";
-
 
 class CommentAreaComponent extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             isEditable: false,
@@ -21,10 +20,8 @@ class CommentAreaComponent extends Component {
     }
 
     componentDidMount() {
-        console.log(789, this.props);
-
         this.setState({
-            editedComment: this.props.comment.text
+            editedComment: this.props.currentComment.text
         })
     }
 
@@ -35,7 +32,7 @@ class CommentAreaComponent extends Component {
     }
 
     removeComment() {
-        this.props.removeComment(this.props.comment._id);
+        this.props.removeComment(this.props.currentComment._id);
     }
 
     onCommentEdit(e) {
@@ -45,11 +42,14 @@ class CommentAreaComponent extends Component {
     }
 
     saveEdited() {
-        if (this.props.comment.text !== this.state.editedComment) {
-            this.props.saveEdited({
-                id: this.props.comment._id,
-                text: this.state.editedComment
-            });
+        if (this.props.currentComment.text !== this.state.editedComment) {
+            this.props.updateComment(
+                {
+                    id: this.props.currentComment._id,
+                    text: this.state.editedComment
+                },
+                this.toggleTextAreaVisibility
+            );
 
         } else {
             this.toggleTextAreaVisibility();
@@ -70,7 +70,7 @@ class CommentAreaComponent extends Component {
                     <textarea
                         className="b-comment-area__textarea"
                         onChange={this.onCommentEdit}
-                        defaultValue={this.props.comment.text} />
+                        defaultValue={this.props.currentComment.text} />
                     <button
                         type="button"
                         className="b-comment-area__btn-save"
@@ -91,7 +91,7 @@ class CommentAreaComponent extends Component {
                         className="b-comment-area__actions-btn"
                         onClick={this.removeComment}>Remove</button>
                 </div>
-                <div className="b-comment-area__text">{this.props.comment.text}</div>
+                <div className="b-comment-area__text">{this.props.currentComment.text}</div>
             </div>
         )
     }
@@ -99,7 +99,7 @@ class CommentAreaComponent extends Component {
 
 const mapStateToProps = ({comments}) => ({comments});
 const mapDispatchToProps = dispatch => ({
-    saveEdited: data => dispatch(saveEdited(data)),
+    updateComment: (data, cb) => dispatch(updateComment(data, cb)),
     removeComment: id => dispatch(removeComment(id))
 });
 

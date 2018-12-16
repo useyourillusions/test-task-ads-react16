@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { postComment } from '../../actions/CommentsAction';
+import { sendComment } from '../../actions/CommentsAction';
 
 class NewCommentComponent extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             newComment: ''
         };
-
-        this.sendComment = this.sendComment.bind(this);
+        this.onSendComment = this.onSendComment.bind(this);
         this.onWriteComment = this.onWriteComment.bind(this);
     }
 
@@ -21,7 +21,7 @@ class NewCommentComponent extends Component {
         }
     }
 
-    sendComment(e) {
+    onSendComment(e) {
         e.preventDefault();
         const comment = {
             text: this.state.newComment,
@@ -31,7 +31,7 @@ class NewCommentComponent extends Component {
             }
         };
 
-        this.props.postComment(comment);
+        this.props.sendComment(comment);
     }
 
     onWriteComment(e) {
@@ -45,7 +45,7 @@ class NewCommentComponent extends Component {
             return (
                 <form action="#"
                       className={`f-default f-comment ${this.props.comments.isSending ? '_sending' : ''}`}
-                      onSubmit={this.sendComment}>
+                      onSubmit={this.onSendComment}>
                     <h4 className="f-default__title f-comment__title">Write a new comment</h4>
                     <textarea name="comment"
                               className="f-comment__area"
@@ -64,8 +64,8 @@ class NewCommentComponent extends Component {
 }
 
 const mapStateToProps = ({comments, userData}) => ({comments, userData});
-const mapDispatchToProps = (dispatch) => ({
-    postComment: (comment) => dispatch(postComment(comment))
+const mapDispatchToProps = dispatch => ({
+    sendComment: comment => dispatch(sendComment(comment))
 });
 
 

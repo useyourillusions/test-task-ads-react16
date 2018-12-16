@@ -1,22 +1,22 @@
 const initialState = {
-    isLoading: false,
+    isUpdating: false,
     isSending: false,
     data: []
 };
 
-const mapRemoved = id => (
-    item => item._id !== id
-);
+const filterRemoved = id =>
+    item => item._id !== id;
 
+const mapUpdated = data =>
+    comment => {
+        if (comment._id === data.id) {
+            comment.text = data.text;
+        }
+        return comment;
+    };
 
 const comments = (state = initialState, action) => {
     switch(action.type) {
-        case 'COMMENTS_LOADING': {
-            return {
-                ...state,
-                isLoading: action.payload
-            }
-        }
         case 'COMMENTS_LOADED': {
             return {
                 ...state,
@@ -29,13 +29,43 @@ const comments = (state = initialState, action) => {
                 isSending: action.payload
             }
         }
-        case 'COMMENT_DISPLAY_NEW': {
+        case 'COMMENT_SENT': {
             return {
                 ...state,
                 isSending: false,
                 data: [
                     ...state.data,
                     action.payload
+                ]
+            }
+        }
+        case 'COMMENT_UPDATING': {
+            return {
+                ...state,
+                isUpdating: true
+            }
+        }
+        case 'COMMENT_UPDATED': {
+            return {
+                ...state,
+                isUpdating: false,
+                data: [
+                    ...state.data.map(mapUpdated(action.payload))
+                ]
+            }
+        }
+        case 'COMMENT_REMOVING': {
+            return {
+                ...state,
+                isRemoving: true
+            }
+        }
+        case 'COMMENT_REMOVED': {
+            return {
+                ...state,
+                isRemoving: false,
+                data: [
+                    ...state.data.filter(filterRemoved(action.payload))
                 ]
             }
         }
