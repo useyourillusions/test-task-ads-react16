@@ -15,6 +15,8 @@ const loginRequired = async (req, res, next) => {
             return responseSender(res, 422, 'User doesn\'t exist!');
         }
 
+        req['user'] = user.toJSON();
+
     } catch (err) {
         return responseSender(res, 500, err.message);
     }

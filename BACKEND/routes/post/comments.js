@@ -1,6 +1,7 @@
 const responseSender = require('../../helpers/response-sender');
 const Advertisement = require('../../database/models/Advertisement');
 const Comment = require('../../database/models/Comment');
+const User = require('../../database/models/User');
 
 const commentsHandlerPost = async (req, res) => {
 
@@ -31,11 +32,17 @@ const commentsHandlerPost = async (req, res) => {
 
     try {
         const savedComment = await commentToSave.save();
+        const author = {
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            photo: req.user.photo
+        };
 
         responseSender(res, 200, 'Your comment has been added!', {
             _id: savedComment._id,
             text: savedComment.text,
-            created: savedComment.created
+            created: savedComment.created,
+            author
         });
 
     } catch (err) {
