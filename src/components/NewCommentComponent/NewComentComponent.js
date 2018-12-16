@@ -25,10 +25,7 @@ class NewCommentComponent extends Component {
         e.preventDefault();
         const comment = {
             text: this.state.newComment,
-            user: {
-                name: 'Me',
-                img: 'https://dummyimage.com/300x300/000/ff7800.png'
-            }
+            adId: this.props.adId
         };
 
         this.props.sendComment(comment);
@@ -63,7 +60,7 @@ class NewCommentComponent extends Component {
     }
 }
 
-const mapStateToProps = ({comments, userData}) => ({comments, userData});
+const mapStateToProps = ({userData, comments}) => ({userData, comments});
 const mapDispatchToProps = dispatch => ({
     sendComment: comment => dispatch(sendComment(comment))
 });

@@ -42,6 +42,10 @@ const http = {
         }
     },
 
+    sendComment(body = {}) {
+        return interceptorAxios().post(env.api.commentsRoute, body)
+    },
+
     updateComment(body = {}) {
         return interceptorAxios().put(env.api.commentsRoute, body);
     },

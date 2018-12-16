@@ -16,7 +16,7 @@ const CommentsList = ({comments}) => {
         return (
             <ul className="l-comments">
                 {
-                    comments.data.map((comment, i) => (
+                    comments.data.map((comment, i) =>
                         <li className="l-comments__item" key={i}>
                             <div className="l-comments__user">
                                 <img src={comment.author.photo} className="l-comments__user-img" alt="" />
@@ -26,13 +26,13 @@ const CommentsList = ({comments}) => {
                             </div>
                             <CommentAreaComponent currentComment={comment} />
                         </li>
-                    ))
+                    )
                 }
             </ul>
         );
     }
 
-    return null;
+    return <p>There is no comments yet...</p>;
 };
 
 const SingleAd = ({singleAd}) => {
@@ -65,8 +65,8 @@ const SingleAd = ({singleAd}) => {
 
 class SingleAdComponent extends Component {
     componentDidMount() {
-        const id = this.props.match.params['ad'];
-        this.props.getSingleAd(id);
+        this.id = this.props.match.params['ad'];
+        this.props.getSingleAd(this.id);
     }
 
     render() {
@@ -75,9 +75,11 @@ class SingleAdComponent extends Component {
                 <SingleAd singleAd={this.props.singleAd} />
                 <section className="s-comments">
                     <div className="container">
-                        <NewCommentComponent/>
-                        <h4 className="s-comments__title">Comments:</h4>
-                        <CommentsList comments={this.props.comments} />
+                        <div className="s-comments__inner">
+                            <NewCommentComponent adId={this.id} />
+                            <h4 className="s-comments__title">Comments:</h4>
+                            <CommentsList comments={this.props.comments} />
+                        </div>
                     </div>
                 </section>
             </div>

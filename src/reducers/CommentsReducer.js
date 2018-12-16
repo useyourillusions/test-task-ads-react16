@@ -50,7 +50,8 @@ const comments = (state = initialState, action) => {
                 ...state,
                 isUpdating: false,
                 data: [
-                    ...state.data.map(mapUpdated(action.payload))
+                    ...state.data
+                        .map(mapUpdated(action.payload))
                 ]
             }
         }
@@ -65,7 +66,8 @@ const comments = (state = initialState, action) => {
                 ...state,
                 isRemoving: false,
                 data: [
-                    ...state.data.filter(filterRemoved(action.payload))
+                    ...state.data
+                        .filter(filterRemoved(action.payload))
                 ]
             }
         }

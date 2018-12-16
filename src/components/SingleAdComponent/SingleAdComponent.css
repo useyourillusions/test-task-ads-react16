@@ -1,5 +1,5 @@
 .s-ad {
-    padding: 80px 50px;
+    padding: 80px 0 50px;
     border: 1px solid;
 }
 
@@ -34,15 +34,19 @@
     border: 1px solid;
 }
 
-.s-comments__title {
+.s-comments__inner {
     max-width: 740px;
-    margin: 50px auto 30px;
+    margin: 0 auto;
+    border: 1px solid #ddd;
+}
+
+.s-comments__title {
+    margin-bottom: 50px;
 }
 
 
 
 .f-comment {
-    max-width: 740px;
     margin: 0 auto;
 }
 
@@ -63,7 +67,6 @@
 
 
 .l-comments {
-    max-width: 740px;
     margin: 0 auto;
 }
 

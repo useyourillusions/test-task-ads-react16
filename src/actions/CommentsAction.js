@@ -11,7 +11,7 @@ const commentSending = bool => ({
     payload: bool
 });
 
-const displayNewComment = obj => ({
+const commentSent = obj => ({
     type: 'COMMENT_SENT',
     payload: obj
 });
@@ -36,12 +36,28 @@ const commentRemoved = string => ({
     payload: string
 });
 
+
 const sendComment = comment => (
     dispatch => {
         dispatch(commentSending(true));
-        setTimeout(() => {
-            dispatch(displayNewComment(comment));
-        }, 2000);
+        http.sendComment(comment)
+            .then(
+                res => {
+                    console.log(res);
+
+                    const comment = res.data.content;
+                    comment['author'] = {
+                        firstName: 'Testy',
+                        lastName: 'Test',
+                        photo: 'https://picsum.photos/200'
+                    };
+                    dispatch(commentSent(comment))
+                },
+                err => {
+                    dispatch(commentSending(false));
+                    console.log(errorHandler(err));
+                }
+            );
     }
 );
 
