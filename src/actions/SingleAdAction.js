@@ -12,11 +12,11 @@ const singleAdLoading = bool => ({
     payload: bool
 });
 
-const getSingleAd = id => {
+const getAd = id => {
     return dispatch => {
         dispatch(singleAdLoading(true));
 
-        http.getAdById(id)
+        http.getSingleAd(id)
             .then(
                 res => {
                     const { comments, ...ad } = res.data;
@@ -31,4 +31,4 @@ const getSingleAd = id => {
     }
 };
 
-export { getSingleAd };
+export { getAd };

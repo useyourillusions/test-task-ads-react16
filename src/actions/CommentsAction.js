@@ -1,6 +1,7 @@
 import http from '../helpers/axiosCustomInstance';
 import errorHandler from '../helpers/httpErrorHandler';
 
+
 const commentsLoaded = array => ({
     type: 'COMMENTS_LOADED',
     payload: array
@@ -37,20 +38,14 @@ const commentRemoved = string => ({
 });
 
 
-const sendComment = comment => (
+const sendComment = comment =>
     dispatch => {
         dispatch(commentSending(true));
         http.sendComment(comment)
             .then(
                 res => {
                     console.log(res);
-
                     const comment = res.data.content;
-                    comment['author'] = {
-                        firstName: 'Testy',
-                        lastName: 'Test',
-                        photo: 'https://picsum.photos/200'
-                    };
                     dispatch(commentSent(comment))
                 },
                 err => {
@@ -58,10 +53,9 @@ const sendComment = comment => (
                     console.log(errorHandler(err));
                 }
             );
-    }
-);
+    };
 
-const updateComment = (data, cb) => (
+const updateComment = (data, cb) =>
     dispatch => {
         dispatch(commentUpdating(true));
         http.updateComment(data)
@@ -76,10 +70,9 @@ const updateComment = (data, cb) => (
                     console.log(errorHandler(err));
                 }
             );
-    }
-);
+    };
 
-const removeComment = id => (
+const removeComment = id =>
     dispatch => {
         dispatch(commentRemoving(true));
         http.removeComment(id)
@@ -93,7 +86,6 @@ const removeComment = id => (
                     console.log(errorHandler(err));
                 }
             );
-    }
-);
+    };
 
 export { commentsLoaded, sendComment, updateComment, removeComment };

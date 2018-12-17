@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { updateComment, removeComment } from "../../actions/CommentsAction";
+import { updateComment, removeComment } from '../../actions/CommentsAction';
 import './CommentAreaComponent.css';
+
 
 class CommentAreaComponent extends Component {
     constructor(props) {

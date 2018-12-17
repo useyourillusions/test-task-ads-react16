@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getSingleAd } from '../../actions/SingleAdAction';
+import { getAd } from '../../actions/SingleAdAction';
 import CommentAreaComponent from '../CommentAreaComponent/CommentAreaComponent';
 import NewCommentComponent from '../NewCommentComponent/NewComentComponent'
 import PropTypes from 'prop-types';
@@ -66,7 +66,7 @@ const SingleAd = ({singleAd}) => {
 class SingleAdComponent extends Component {
     componentDidMount() {
         this.id = this.props.match.params['ad'];
-        this.props.getSingleAd(this.id);
+        this.props.getAd(this.id);
     }
 
     render() {
@@ -89,7 +89,7 @@ class SingleAdComponent extends Component {
 
 const mapStateToProps = ({singleAd, comments}) => ({singleAd, comments});
 const mapDispatchToProps = dispatch => ({
-    getSingleAd: id => dispatch(getSingleAd(id))
+    getAd: id => dispatch(getAd(id))
 });
 
 SingleAdComponent.propTtypes = {

@@ -35,7 +35,7 @@ const http = {
         return interceptorAxios().get(env.api.adRoute);
     },
 
-    getAdById(id) {
+    getSingleAd(id) {
         if (id) {
             const query = '?id=' + id;
             return interceptorAxios().get(env.api.adRoute + query);
