@@ -71,7 +71,7 @@ class HeaderComponent extends Component {
 const mapStateToProps = ({userData}) => ({userData});
 const mapDispatchToProps = dispatch => ({
     applyUserData: data => dispatch(authSuccess(data)),
-    logout: (data) => dispatch(authLogout(data))
+    logout: data => dispatch(authLogout(data))
 });
 
 export default withRouter(

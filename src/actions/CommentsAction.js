@@ -1,5 +1,6 @@
 import http from '../helpers/axiosCustomInstance';
 import errorHandler from '../helpers/httpErrorHandler';
+import { commentUpdating, commentRemoving } from './CommentsProcessingAction';
 
 
 const commentsLoaded = array => ({
@@ -7,29 +8,14 @@ const commentsLoaded = array => ({
     payload: array
 });
 
-const commentSending = bool => ({
-    type: 'COMMENT_SENDING',
-    payload: bool
-});
-
 const commentSent = obj => ({
     type: 'COMMENT_SENT',
     payload: obj
 });
 
-const commentUpdating = bool => ({
-    type: 'COMMENT_UPDATING',
-    payload: bool
-});
-
 const commentUpdated = obj => ({
     type: 'COMMENT_UPDATED',
     payload: obj
-});
-
-const commentRemoving = bool => ({
-    type: 'COMMENT_REMOVING',
-    payload: bool
 });
 
 const commentRemoved = string => ({
@@ -40,7 +26,6 @@ const commentRemoved = string => ({
 
 const sendComment = comment =>
     dispatch => {
-        dispatch(commentSending(true));
         http.sendComment(comment)
             .then(
                 res => {
@@ -49,32 +34,30 @@ const sendComment = comment =>
                     dispatch(commentSent(comment))
                 },
                 err => {
-                    dispatch(commentSending(false));
                     console.log(errorHandler(err));
                 }
             );
     };
 
-const updateComment = (data, cb) =>
+const updateComment = data =>
     dispatch => {
-        dispatch(commentUpdating(true));
+        dispatch(commentUpdating({state: true, id: data.id}));
         http.updateComment(data)
             .then(
                 res => {
                     console.log(res);
                     dispatch(commentUpdated(data));
-                    cb();
                 },
                 err => {
-                    dispatch(commentUpdating(false));
                     console.log(errorHandler(err));
                 }
-            );
+            )
+            .finally(() => dispatch(commentUpdating({state: false, id: null})));
     };
 
 const removeComment = id =>
     dispatch => {
-        dispatch(commentRemoving(true));
+        dispatch(commentRemoving({state: true, id}));
         http.removeComment(id)
             .then(
                 res => {
@@ -82,10 +65,10 @@ const removeComment = id =>
                     dispatch(commentRemoved(id));
                 },
                 err => {
-                    commentRemoving(false);
                     console.log(errorHandler(err));
                 }
-            );
+            )
+            .finally(() => commentRemoving({state: false, id: null}));
     };
 
 export { commentsLoaded, sendComment, updateComment, removeComment };

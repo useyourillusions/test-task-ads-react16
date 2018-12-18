@@ -26,8 +26,8 @@ class HomeComponent extends Component {
                 <div className="container">
                     <ul className="l-ads">
                         {
-                            this.props.allAds.data.map((item, i) => (
-                                <li className="l-ads__item" key={i}>
+                            this.props.allAds.data.map(item => (
+                                <li className="l-ads__item" key={item._id}>
                                     <NavLink to={`ad/${item._id}`} className="l-ads__item-img-link">
                                         <img src={item.img} className="l-ads__item-img" alt={item.title} />
                                     </NavLink>
@@ -45,7 +45,7 @@ class HomeComponent extends Component {
 }
 
 const mapStateToProps = ({allAds}) => ({allAds});
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     getAllAds: () => dispatch(getAllAds())
 });
 

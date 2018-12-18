@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import './SingleAdComponent.css';
 
 
-const CommentsList = ({comments}) => {
+const CommentsList = ({comments, processing}) => {
     if (comments.isLoading) {
         return <h3 style={{textAlign: 'center'}}>Loading...</h3>;
     }
@@ -16,17 +16,21 @@ const CommentsList = ({comments}) => {
         return (
             <ul className="l-comments">
                 {
-                    comments.data.map((comment, i) =>
-                        <li className="l-comments__item" key={i}>
+                    comments.data.map(comment => {
+                        const isUpdating = processing.isUpdating && processing.id === comment._id;
+                        const isRemoving = processing.isRemoving && processing.id === comment._id;
+
+                        return <li className={`l-comments__item${isUpdating ? ' _updating' : ''}${isRemoving ? ' _removing' : ''}`}
+                                   key={comment._id}>
                             <div className="l-comments__user">
                                 <img src={comment.author.photo} className="l-comments__user-img" alt="" />
                                 <span className="l-comments__user-name">
                                     {`${comment.author.firstName} ${comment.author.lastName}`}
                                 </span>
                             </div>
-                            <CommentAreaComponent currentComment={comment} />
+                            <CommentAreaComponent currentComment={comment}/>
                         </li>
-                    )
+                    })
                 }
             </ul>
         );
@@ -38,26 +42,22 @@ const CommentsList = ({comments}) => {
 const SingleAd = ({singleAd}) => {
     const ad = singleAd.data;
 
-    if (singleAd.isLoading) {
-        return (
-            <section className="s-ad">
-                <div className="container">
-                    <h3 style={{textAlign: 'center'}}>Loading...</h3>
-                </div>
-            </section>
-        )
-    }
-
     return (
         <section className="s-ad">
             <div className="container">
-                <div className="b-ad">
-                    <h2 className="b-ad__title">{ad.title}</h2>
-                    <img src={ad.img}
-                         className="b-ad__img"
-                         alt={ad.title} />
-                    <p className="b-ad__text">{ad.text}</p>
-                </div>
+                {
+                    singleAd.isLoading
+                        ?
+                        <h3 style={{textAlign: 'center'}}>Loading...</h3>
+                        :
+                        <div className="b-ad">
+                            <h2 className="b-ad__title">{ad.title}</h2>
+                            <img src={ad.img}
+                                 className="b-ad__img"
+                                 alt={ad.title} />
+                            <p className="b-ad__text">{ad.text}</p>
+                        </div>
+                }
             </div>
         </section>
     )
@@ -78,7 +78,9 @@ class SingleAdComponent extends Component {
                         <div className="s-comments__inner">
                             <NewCommentComponent adId={this.id} />
                             <h4 className="s-comments__title">Comments:</h4>
-                            <CommentsList comments={this.props.comments} />
+                            <CommentsList
+                                comments={this.props.comments}
+                                processing={this.props.commentsProcessing} />
                         </div>
                     </div>
                 </section>
@@ -87,7 +89,7 @@ class SingleAdComponent extends Component {
     }
 }
 
-const mapStateToProps = ({singleAd, comments}) => ({singleAd, comments});
+const mapStateToProps = ({singleAd, comments, commentsProcessing}) => ({singleAd, comments, commentsProcessing});
 const mapDispatchToProps = dispatch => ({
     getAd: id => dispatch(getAd(id))
 });

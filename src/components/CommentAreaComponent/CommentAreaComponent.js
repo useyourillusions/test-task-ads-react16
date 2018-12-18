@@ -20,16 +20,23 @@ class CommentAreaComponent extends Component {
         this.onCommentEdit = this.onCommentEdit.bind(this);
     }
 
-    componentDidMount() {
-        this.setState({
-            editedComment: this.props.currentComment.text
-        })
+    componentDidUpdate(prevProps, prevState) {
+        if (
+            this.props.comments !== prevProps.comments &&
+            prevState.editedComment &&
+            prevState.editedComment === this.state.editedComment
+        ) {
+            this.setState({
+                isEditable: !this.state.isEditable,
+                editedComment: ''
+            });
+        }
     }
 
     toggleTextAreaVisibility() {
         this.setState({
             isEditable: !this.state.isEditable
-        })
+        });
     }
 
     removeComment() {
@@ -43,13 +50,12 @@ class CommentAreaComponent extends Component {
     }
 
     saveEdited() {
-        if (this.props.currentComment.text !== this.state.editedComment) {
+        if (this.state.editedComment && this.state.editedComment !== this.props.currentComment.text) {
             this.props.updateComment(
                 {
                     id: this.props.currentComment._id,
                     text: this.state.editedComment
-                },
-                this.toggleTextAreaVisibility
+                }
             );
 
         } else {
@@ -57,16 +63,36 @@ class CommentAreaComponent extends Component {
         }
     }
 
-    render() {
-        if (this.state.isEditable) {
+    getFormattedDate() {
+        const postedDate = new Date(this.props.currentComment.created);
+        const addZero = number => {
+            const string = number + '';
+            return string.length > 1 ? number : 0 + string;
+        };
+        const formattedPostedDate =
+            `Posted: ${addZero(postedDate.getDay())}.${addZero(postedDate.getMonth() + 1)}.${postedDate.getFullYear()} 
+            at ${addZero(postedDate.getHours())}:${addZero(postedDate.getMinutes())}`;
 
+        return formattedPostedDate;
+    }
+
+    render() {
+        const isThatMyComment = this.props.userData.isLoggedIn &&
+            this.props.currentComment.author.email === this.props.userData.personalInfo.email;
+
+        if (this.state.isEditable) {
             return (
                 <div className="b-comment-area">
                     <div className="b-comment-area__actions">
-                        <button
-                            type="button"
-                            className="b-comment-area__actions-btn"
-                            onClick={this.toggleTextAreaVisibility}>Cancel</button>
+                        <span className="b-comment-area__actions-posted">
+                            {this.getFormattedDate()}
+                        </span>
+                        <div>
+                            <button
+                                type="button"
+                                className="b-comment-area__actions-btn"
+                                onClick={this.toggleTextAreaVisibility}>Cancel</button>
+                        </div>
                     </div>
                     <textarea
                         className="b-comment-area__textarea"
@@ -82,25 +108,40 @@ class CommentAreaComponent extends Component {
 
         return (
             <div className="b-comment-area">
-                <div className="b-comment-area__actions">
-                    <button
-                        type="button"
-                        className="b-comment-area__actions-btn"
-                        onClick={this.toggleTextAreaVisibility}>Edit</button>
-                    <button
-                        type="button"
-                        className="b-comment-area__actions-btn"
-                        onClick={this.removeComment}>Remove</button>
-                </div>
+                {
+                    isThatMyComment
+                        ?
+                        <div className="b-comment-area__actions">
+                            <span className="b-comment-area__actions-posted">
+                                {this.getFormattedDate()}
+                            </span>
+                            <div>
+                                <button
+                                    type="button"
+                                    className="b-comment-area__actions-btn"
+                                    onClick={this.toggleTextAreaVisibility}>Edit</button>
+                                <button
+                                    type="button"
+                                    className="b-comment-area__actions-btn"
+                                    onClick={this.removeComment}>Remove</button>
+                            </div>
+                        </div>
+                        :
+                        <div className="b-comment-area__actions">
+                            <span className="b-comment-area__actions-posted">
+                                {this.getFormattedDate()}
+                            </span>
+                        </div>
+                }
                 <div className="b-comment-area__text">{this.props.currentComment.text}</div>
             </div>
         )
     }
 }
 
-const mapStateToProps = ({comments}) => ({comments});
+const mapStateToProps = ({comments, userData}) => ({comments, userData});
 const mapDispatchToProps = dispatch => ({
-    updateComment: (data, cb) => dispatch(updateComment(data, cb)),
+    updateComment: data => dispatch(updateComment(data)),
     removeComment: id => dispatch(removeComment(id))
 });
 

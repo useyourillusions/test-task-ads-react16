@@ -7,7 +7,8 @@ class NewCommentComponent extends Component {
         super(props);
 
         this.state = {
-            newComment: ''
+            newComment: '',
+            isSending: false
         };
         this.onSendComment = this.onSendComment.bind(this);
         this.onWriteComment = this.onWriteComment.bind(this);
@@ -16,7 +17,8 @@ class NewCommentComponent extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.comments.data.length !== this.props.comments.data.length) {
             this.setState({
-                newComment: ''
+                newComment: '',
+                isSending: false
             });
         }
     }
@@ -28,6 +30,9 @@ class NewCommentComponent extends Component {
             adId: this.props.adId
         };
 
+        this.setState({
+            isSending: true
+        });
         this.props.sendComment(comment);
     }
 
@@ -38,25 +43,26 @@ class NewCommentComponent extends Component {
     }
 
     render() {
-        if (this.props.userData.isLoggedIn) {
-            return (
-                <form action="#"
-                      className={`f-default f-comment ${this.props.comments.isSending ? '_sending' : ''}`}
-                      onSubmit={this.onSendComment}>
-                    <h4 className="f-default__title f-comment__title">Write a new comment</h4>
-                    <textarea name="comment"
-                              className="f-comment__area"
-                              value={this.state.newComment}
-                              onChange={this.onWriteComment}
-                              rows="10" />
-                    <button type="submit"
-                            className="f-default__btn f-comment__btn"
-                            disabled={this.props.comments.isSending}>Send</button>
-                </form>
-            )
-        }
-
-        return '';
+        return (
+            this.props.userData.isLoggedIn
+            ?
+            <form action="#"
+                  className={`f-default f-comment${this.state.isSending ? ' _sending' : ''}`}
+                  onSubmit={this.onSendComment}>
+                <h4 className="f-default__title f-comment__title">Write a new comment</h4>
+                <textarea name="comment"
+                          className="f-comment__area"
+                          value={this.state.newComment}
+                          onChange={this.onWriteComment}
+                          rows="10"/>
+                <button type="submit"
+                        className="f-default__btn f-comment__btn"
+                        disabled={this.props.comments.isSending}>Send
+                </button>
+            </form>
+            :
+            null
+        );
     }
 }
 

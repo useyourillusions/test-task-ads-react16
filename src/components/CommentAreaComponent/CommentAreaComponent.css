@@ -3,8 +3,18 @@
 }
 
 .b-comment-area__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 20px;
     margin-bottom: 10px;
     text-align: right;
+}
+
+.b-comment-area__actions-posted {
+    font-size: 9.5px;
+    letter-spacing: 0.5px;
+    color: #616161;
 }
 
 .b-comment-area__actions-btn {
