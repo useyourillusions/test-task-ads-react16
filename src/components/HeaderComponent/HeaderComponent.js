@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
-import { authLogout } from '../../actions/AuthAction';
+import { authSuccess, authLogout } from '../../actions/AuthAction';
+import http from '../../helpers/axiosCustomInstance';
 import './HeaderComponent.css';
 
 const LoggedStatus = ({props}) => {
@@ -30,6 +31,29 @@ const LoggedStatus = ({props}) => {
 };
 
 class HeaderComponent extends Component {
+
+    componentDidMount() {
+        const token = localStorage.getItem('token');
+
+        if (token && !this.props.userData.isLoggedIn) {
+            this.getUserData();
+        }
+    }
+
+    getUserData() {
+        http
+            .getUserData()
+            .then(
+                res => {
+                    this.props.applyUserData(res.data.content);
+                },
+                err => {
+                    console.log(err);
+                    localStorage.removeItem('token');
+                }
+            )
+    }
+
     render() {
         return (
             <header className="header" onClick={this.props.test}>
@@ -45,7 +69,8 @@ class HeaderComponent extends Component {
 }
 
 const mapStateToProps = ({userData}) => ({userData});
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
+    applyUserData: data => dispatch(authSuccess(data)),
     logout: (data) => dispatch(authLogout(data))
 });
 

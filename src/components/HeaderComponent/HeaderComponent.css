@@ -1,5 +1,10 @@
 .header {
     border: 1px solid;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: #f9f9f9;
 }
 
 .header__nav {

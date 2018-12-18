@@ -29,7 +29,8 @@ const signInHandlerPost = async (req, res) => {
         user: {
             firstName: user.firstName,
             lastName: user.lastName,
-            photo: user.photo
+            photo: user.photo,
+            email: user.email
         },
         token
     });

@@ -12,6 +12,7 @@ const loginRequired = require('./helpers/login-required');
 
 const registerHandlerPost = require('./routes/post/register');
 const signInHandlerPost = require('./routes/post/sign-in');
+const userDataHandlerGet = require('./routes/get/user');
 
 const adHandlerGet = require('./routes/get/ad');
 const adHandlerPost = require('./routes/post/ad');
@@ -46,6 +47,9 @@ app.post('/api/register', registerHandlerPost);
 
 // Authentication route
 app.post('/api/sign-in', signInHandlerPost);
+
+// User data route
+app.get('/api/user', loginRequired, userDataHandlerGet);
 
 // Advertisement route
 app

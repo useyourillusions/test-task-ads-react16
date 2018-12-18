@@ -10,7 +10,7 @@ const extendCommentsWithAuthor = comments =>
         try {
             const author = await User
                 .findOne({_id: item.userId})
-                .select('firstName lastName photo -_id');
+                .select('-_id -password -__v');
 
             commentJson['author'] = author.toJSON();
 

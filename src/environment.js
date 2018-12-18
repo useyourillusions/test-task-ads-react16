@@ -1,19 +1,21 @@
 const environment = {
-  mode: 'dev',
+    mode: 'dev',
 
-  dev: {
-    api: {
-      port: '5000',
-      uri: 'http://localhost',
-      registerRoute: 'api/register',
-      signInRoute: 'api/sign-in',
-      adRoute: 'api/ad',
-      commentsRoute: 'api/comments'
-    }
-  },
+    dev: {
+        api: {
+            port: '5000',
+            uri: 'http://localhost'
+        },
+        apiRoutes: {
+            user: 'api/user',
+            register: 'api/register',
+            signIn: 'api/sign-in',
+            ads: 'api/ad',
+            comments: 'api/comments'
+        }
+    },
 
-  prod: {
-  }
+    prod: {}
 };
 
 export default environment[environment.mode];

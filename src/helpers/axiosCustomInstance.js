@@ -6,13 +6,19 @@ const interceptorAxios = () => {
     const token = localStorage.getItem('token');
 
     instance.interceptors.request.use(config => {
-        const isAuthNeededAd = config.url.indexOf(env.api.adRoute) >= 0 &&
+        const isAuthNeededForUserData = config.url.indexOf(env.apiRoutes.user) >= 0;
+
+        const isAuthNeededForAd = config.url.indexOf(env.apiRoutes.ads) >= 0 &&
             ['post', 'put'].indexOf(config.method) >= 0;
 
-        const isAuthNeededComments = config.url.indexOf(env.api.commentsRoute) >= 0 &&
+        const isAuthNeededForComments = config.url.indexOf(env.apiRoutes.comments) >= 0 &&
             ['post', 'put', 'delete'].indexOf(config.method) >= 0;
 
-        if (isAuthNeededAd || isAuthNeededComments) {
+        if (
+            isAuthNeededForUserData ||
+            isAuthNeededForAd ||
+            isAuthNeededForComments
+        ) {
             config.headers['Authorization'] = 'Bearer ' + token;
         }
 
@@ -23,35 +29,39 @@ const interceptorAxios = () => {
 };
 
 const http = {
+    getUserData() {
+        return interceptorAxios().get(env.apiRoutes.user);
+    },
+
     register(body = {}) {
-        return interceptorAxios().post(env.api.registerRoute, body);
+        return interceptorAxios().post(env.apiRoutes.register, body);
     },
 
     signIn(body = {}) {
-        return interceptorAxios().post(env.api.signInRoute, body);
+        return interceptorAxios().post(env.apiRoutes.signIn, body);
     },
 
     getAllAds() {
-        return interceptorAxios().get(env.api.adRoute);
+        return interceptorAxios().get(env.apiRoutes.ads);
     },
 
     getSingleAd(id) {
         if (id) {
             const query = '?id=' + id;
-            return interceptorAxios().get(env.api.adRoute + query);
+            return interceptorAxios().get(env.apiRoutes.ads + query);
         }
     },
 
     sendComment(body = {}) {
-        return interceptorAxios().post(env.api.commentsRoute, body)
+        return interceptorAxios().post(env.apiRoutes.comments, body)
     },
 
     updateComment(body = {}) {
-        return interceptorAxios().put(env.api.commentsRoute, body);
+        return interceptorAxios().put(env.apiRoutes.comments, body);
     },
 
     removeComment(id = '') {
-        return interceptorAxios().delete(`${env.api.commentsRoute}/${id}`);
+        return interceptorAxios().delete(`${env.apiRoutes.comments}/${id}`);
     }
 };
 

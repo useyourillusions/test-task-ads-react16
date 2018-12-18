@@ -11,9 +11,13 @@ const authSuccess = obj => ({
     payload: obj
 });
 
-const authLogout = () => ({
-    type: 'AUTH_LOGOUT'
-});
+const authLogout = () => {
+    localStorage.removeItem('token');
+
+    return {
+        type: 'AUTH_LOGOUT'
+    }
+};
 
 const sendData = dataToSend => (
     dispatch => {

@@ -35,7 +35,8 @@ const commentsHandlerPost = async (req, res) => {
         const author = {
             firstName: req.user.firstName,
             lastName: req.user.lastName,
-            photo: req.user.photo
+            photo: req.user.photo,
+            email: req.user.email
         };
 
         responseSender(res, 200, 'Your comment has been added!', {
