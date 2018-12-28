@@ -70,7 +70,7 @@ class CommentAreaComponent extends Component {
             return string.length > 1 ? number : 0 + string;
         };
         const formattedPostedDate =
-            `Posted: ${addZero(postedDate.getDay())}.${addZero(postedDate.getMonth() + 1)}.${postedDate.getFullYear()} 
+            `Posted: ${addZero(postedDate.getDate())}.${addZero(postedDate.getMonth() + 1)}.${postedDate.getFullYear()} 
             at ${addZero(postedDate.getHours())}:${addZero(postedDate.getMinutes())}`;
 
         return formattedPostedDate;

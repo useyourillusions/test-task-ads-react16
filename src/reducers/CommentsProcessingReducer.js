@@ -1,5 +1,6 @@
 const initialState = {
     id: null,
+    isSending: false,
     isUpdating: false,
     isRemoving: false
 };
@@ -7,6 +8,12 @@ const initialState = {
 
 const commentsProcessing = (state = initialState, action) => {
     switch(action.type) {
+        case 'COMMENT_SENDING': {
+            return {
+                ...state,
+                isSending: action.payload
+            }
+        }
         case 'COMMENT_UPDATING': {
             return {
                 ...state,

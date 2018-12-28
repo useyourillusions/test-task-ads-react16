@@ -1,3 +1,8 @@
+const commentSending = obj => ({
+    type: 'COMMENT_SENDING',
+    payload: obj
+});
+
 const commentUpdating = obj => ({
     type: 'COMMENT_UPDATING',
     payload: obj
@@ -9,4 +14,4 @@ const commentRemoving = obj => ({
 });
 
 
-export { commentUpdating, commentRemoving };
+export { commentSending, commentUpdating, commentRemoving };

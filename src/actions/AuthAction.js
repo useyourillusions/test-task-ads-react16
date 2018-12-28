@@ -26,9 +26,8 @@ const sendData = dataToSend => (
         http.signIn(dataToSend)
             .then(
                 res => {
-                    const { token, user } = res.data.content;
-
-                    localStorage.setItem('token', token);
+                    console.log(res);
+                    const user = res.data.content.user;
                     dispatch(authSuccess(user));
                 },
                 err => {

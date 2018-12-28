@@ -7,8 +7,7 @@ class NewCommentComponent extends Component {
         super(props);
 
         this.state = {
-            newComment: '',
-            isSending: false
+            newComment: ''
         };
         this.onSendComment = this.onSendComment.bind(this);
         this.onWriteComment = this.onWriteComment.bind(this);
@@ -17,8 +16,7 @@ class NewCommentComponent extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.comments.data.length !== this.props.comments.data.length) {
             this.setState({
-                newComment: '',
-                isSending: false
+                newComment: ''
             });
         }
     }
@@ -30,9 +28,6 @@ class NewCommentComponent extends Component {
             adId: this.props.adId
         };
 
-        this.setState({
-            isSending: true
-        });
         this.props.sendComment(comment);
     }
 
@@ -47,7 +42,7 @@ class NewCommentComponent extends Component {
             this.props.userData.isLoggedIn
             ?
             <form action="#"
-                  className={`f-default f-comment${this.state.isSending ? ' _sending' : ''}`}
+                  className={`f-default f-comment${this.props.commentsProcessing.isSending ? ' _sending' : ''}`}
                   onSubmit={this.onSendComment}>
                 <h4 className="f-default__title f-comment__title">Write a new comment</h4>
                 <textarea name="comment"
@@ -57,7 +52,7 @@ class NewCommentComponent extends Component {
                           rows="10"/>
                 <button type="submit"
                         className="f-default__btn f-comment__btn"
-                        disabled={this.props.comments.isSending}>Send
+                        disabled={this.props.commentsProcessing.isSending}>Send
                 </button>
             </form>
             :
@@ -66,7 +61,7 @@ class NewCommentComponent extends Component {
     }
 }
 
-const mapStateToProps = ({userData, comments}) => ({userData, comments});
+const mapStateToProps = ({userData, comments, commentsProcessing}) => ({userData, comments, commentsProcessing});
 const mapDispatchToProps = dispatch => ({
     sendComment: comment => dispatch(sendComment(comment))
 });

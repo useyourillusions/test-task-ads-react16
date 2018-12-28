@@ -2,11 +2,6 @@ const initialState = {
     isLoggedIn: false,
     personalInfo: {},
     isOnProcess: false,
-    /*errorData: {
-        hasError: false,
-        errorCode: null,
-        errorMessage: null
-    },*/
 };
 
 const userData = (state = initialState, action) => {

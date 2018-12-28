@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { sendData } from '../../actions/AuthAction';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom';
 import './AuthComponent.css';
 
 
@@ -17,7 +17,9 @@ class AuthComponent extends Component {
 
         this.signInUser = this.signInUser.bind(this);
         this.onFillInput = this.onFillInput.bind(this);
-        this.redirectIfSuccess = () => this.props.userData.isLoggedIn ? <Redirect to="/" /> : '';
+        this.redirectIfSuccess = () => this.props.userData.isLoggedIn
+            ? <Redirect to="/" />
+            : null;
     }
 
     componentDidUpdate(prevProps) {
@@ -89,9 +91,9 @@ class AuthComponent extends Component {
     }
 }
 
-const mapStateToProps = ({userData}) => ({userData});
-const mapDispatchToProps = (dispatch) => ({
-    sendAuthData: (data) => dispatch(sendData(data))
+const mapStateToProps = ({userData, redirect}) => ({userData, redirect});
+const mapDispatchToProps = dispatch => ({
+    sendAuthData: data => dispatch(sendData(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthComponent);

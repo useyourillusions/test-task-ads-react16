@@ -25,6 +25,21 @@ const interceptorAxios = () => {
         return config;
     });
 
+    instance.interceptors.response.use(
+        res => {
+            if (
+                res.data &&
+                res.data.content &&
+                res.data.content.token
+            ) {
+                localStorage.setItem('token', res.data.content.token);
+                delete res.data.content.token;
+            }
+
+            return res;
+        }
+    );
+
     return instance;
 };
 
