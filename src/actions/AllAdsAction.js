@@ -15,17 +15,16 @@ const getAllAds = () => {
     return dispatch => {
         dispatch(allAdsLoading(true));
 
-        http
-            .getAllAds()
-            .then(
-                res => {
-                    const data = res.data;
-                    dispatch(allAdsLoaded(data));
-                },
-                err => {
-                    console.log(errorHandler(err));
-                }
-            )
+        http.getAllAds().then(
+            res => {
+                console.log(res);
+                const data = res.data;
+                dispatch(allAdsLoaded(data));
+            },
+            err => {
+                errorHandler(err).then(res => console.log(res));
+            }
+        );
     }
 };
 

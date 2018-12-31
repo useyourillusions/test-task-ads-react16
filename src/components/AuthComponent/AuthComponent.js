@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sendData } from '../../actions/AuthAction';
+import { proceedSignIn } from '../../actions/AuthAction';
 import { Redirect } from 'react-router-dom';
 import './AuthComponent.css';
 
@@ -25,7 +25,7 @@ class AuthComponent extends Component {
     componentDidUpdate(prevProps) {
         if (
             prevProps.userData.isLoggedIn !== this.props.userData.isLoggedIn &&
-            prevProps.userData.isOnProcess !== this.props.userData.isOnProcess
+            prevProps.userData.isSignInOnProcess !== this.props.userData.isSignInOnProcess
         ) {
             this.setState({
                 userData: {
@@ -44,7 +44,7 @@ class AuthComponent extends Component {
             return;
         }
 
-        this.props.sendAuthData(this.state.userData);
+        this.props.proceedSignIn(this.state.userData);
     }
 
     onFillInput(e) {
@@ -62,7 +62,7 @@ class AuthComponent extends Component {
                 {this.redirectIfSuccess()}
                 <div className="container">
                     <form action="#"
-                          className={`f-default f-auth${this.props.userData.isOnProcess ? ' _sending' : ''}`}
+                          className={`f-default f-auth${this.props.userData.isSignInOnProcess ? ' _sending' : ''}`}
                           onSubmit={this.signInUser}
                           noValidate>
                         <div className="f-default__row">
@@ -83,7 +83,7 @@ class AuthComponent extends Component {
                         </div>
                         <button type="submit"
                                 className="f-default__btn"
-                                disabled={this.props.userData.isOnProcess}>Sign In</button>
+                                disabled={this.props.userData.isSignInOnProcess}>Sign In</button>
                     </form>
                 </div>
             </section>
@@ -93,7 +93,7 @@ class AuthComponent extends Component {
 
 const mapStateToProps = ({userData, redirect}) => ({userData, redirect});
 const mapDispatchToProps = dispatch => ({
-    sendAuthData: data => dispatch(sendData(data))
+    proceedSignIn: data => dispatch(proceedSignIn(data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AuthComponent);

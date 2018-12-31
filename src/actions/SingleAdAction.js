@@ -2,6 +2,7 @@ import { commentsLoaded } from './CommentsAction';
 import errorHandler from '../helpers/httpErrorHandler';
 import http from '../helpers/axiosCustomInstance';
 
+
 const singleAdLoaded = object => ({
     type: 'SINGLE-AD_LOADED',
     payload: object
@@ -16,18 +17,18 @@ const getAd = id => {
     return dispatch => {
         dispatch(singleAdLoading(true));
 
-        http.getSingleAd(id)
-            .then(
-                res => {
-                    const { comments, ...ad } = res.data;
+        http.getSingleAd(id).then(
+            res => {
+                console.log(res);
+                const { comments, ...ad } = res.data;
 
-                    dispatch(singleAdLoaded(ad));
-                    dispatch(commentsLoaded(comments));
-                },
-                err => {
-                    console.log(errorHandler(err));
-                }
-            );
+                dispatch(singleAdLoaded(ad));
+                dispatch(commentsLoaded(comments));
+            },
+            err => {
+                errorHandler(err).then(res => console.log(res));
+            }
+        );
     }
 };
 

@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { authSuccess, authLogout } from './actions/AuthAction';
+import { authSuccess, proceedLogout } from './actions/AuthAction';
 import http from './helpers/axiosCustomInstance';
+import errorHandler from './helpers/httpErrorHandler';
 
 import HomeComponent from './components/HomeComponent/HomeComponent';
 import HeaderComponent from './components/HeaderComponent/HeaderComponent';
@@ -13,7 +14,7 @@ import AuthComponent from './components/AuthComponent/AuthComponent';
 import logo from './logo.svg';
 import './App.css';
 
-//STATELESS
+
 const Error = () => (
         <div>
             <p>Error</p>
@@ -30,22 +31,31 @@ class App extends Component {
     }
 
     getUserData() {
-        http
-            .getUserData()
-            .then(
-                res => {
-                    this.props.applyUserData(res.data.content);
-                },
-                err => {
-                    console.log(err);
-                }
-            )
+        http.getUserData().then(
+            res => {
+                console.log(res);
+                this.props.applyUserData(res.data.content);
+            },
+            err => {
+                errorHandler(err).then(
+                    res => {
+                        console.log(res);
+
+                        if (res.code === 200) {
+                            this.getUserData()
+                        } else {
+                            this.props.logout();
+                        }
+                    }
+                );
+            }
+        )
     }
 
     render() {
         return (
             <Router>
-                <div>
+                <Fragment>
                     <HeaderComponent/>
                     <Switch>
                         <Route path="/" component={HomeComponent} exact />
@@ -54,7 +64,7 @@ class App extends Component {
                         <Route path="/sign-in" component={AuthComponent} />
                         <Route component={Error}/>
                     </Switch>
-                </div>
+                </Fragment>
             </Router>
         );
     }
@@ -63,7 +73,7 @@ class App extends Component {
 const mapStateToProps = ({userData}) => ({userData});
 const mapDispatchToProps = dispatch => ({
     applyUserData: data => dispatch(authSuccess(data)),
-    logout: () => dispatch(authLogout())
+    logout: () => dispatch(proceedLogout())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

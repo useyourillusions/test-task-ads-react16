@@ -2,24 +2,25 @@ import errorHandler from '../helpers/httpErrorHandler';
 import http from '../helpers/axiosCustomInstance';
 
 const authProcess = bool => ({
-    type: 'AUTH_PROCESS',
+    type: 'SIGN-IN_PROCESS',
     payload: bool
 });
 
 const authSuccess = obj => ({
-    type: 'AUTH_SUCCESS',
+    type: 'SIGN-IN_SUCCESS',
     payload: obj
 });
 
-const authLogout = () => {
-    localStorage.removeItem('token');
+const logoutProcess = bool => ({
+    type: 'LOGOUT_PROCESS',
+    payload: bool
+});
 
-    return {
-        type: 'AUTH_LOGOUT'
-    }
-};
+const logoutFinish = () => ({
+    type: 'LOGOUT_END'
+});
 
-const sendData = dataToSend => (
+const proceedSignIn = dataToSend => (
     dispatch => {
         dispatch(authProcess(true));
 
@@ -32,10 +33,33 @@ const sendData = dataToSend => (
                 },
                 err => {
                     dispatch(authProcess(false));
-                    console.log(errorHandler(err));
+                    errorHandler(err).then(res => console.log(res));
                 }
         );
     }
 );
 
-export { authSuccess, sendData, authLogout };
+const proceedLogout = () => (
+    dispatch => {
+        dispatch(logoutProcess(true));
+
+        http.logout()
+            .then(
+                res => {
+                    console.log(res);
+                },
+                err => {
+                    console.log(err);
+                }
+            )
+            .finally(
+                () => {
+                    localStorage.removeItem('token');
+                    dispatch(logoutFinish());
+                }
+            );
+    }
+);
+
+
+export { authSuccess, proceedSignIn, proceedLogout };

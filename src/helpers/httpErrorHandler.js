@@ -1,18 +1,40 @@
-const errorHandler = res => {
-    let data = {};
+import http from './axiosCustomInstance';
+
+const prepareErrorData = data => {
+    let preparedData = {};
 
     try {
-        data = res.response.data;
-        alert(data.message);
+        preparedData = data.response.data;
 
     } catch (err) {
-        data = {
+        preparedData = {
             code: 0,
             message: err.message
         }
     }
 
-    return data;
+    return preparedData;
+};
+
+const errorHandler = error => {
+    let data = prepareErrorData(error);
+
+    if (data.content && data.content.needRefresh) {
+        return http.refreshToken().then(
+            res => {
+                return Promise.resolve(res.data);
+            },
+            err => {
+                const data = prepareErrorData(err);
+                alert(data.message);
+
+                return Promise.resolve(data);
+            }
+        );
+    }
+
+    alert(data.message);
+    return Promise.resolve(data);
 };
 
 export default errorHandler;

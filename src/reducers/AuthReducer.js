@@ -1,29 +1,37 @@
 const initialState = {
     isLoggedIn: false,
     personalInfo: {},
-    isOnProcess: false,
+    isSignInOnProcess: false,
+    isLogoutOnProcess: false
 };
 
 const userData = (state = initialState, action) => {
     switch(action.type) {
-        case 'AUTH_PROCESS': {
+        case 'SIGN-IN_PROCESS': {
             return {
                 ...state,
-                isOnProcess: action.payload,
+                isSignInOnProcess: action.payload,
             }
         }
-        case 'AUTH_SUCCESS': {
+        case 'SIGN-IN_SUCCESS': {
             return {
                 ...state,
                 isLoggedIn: true,
-                isOnProcess: false,
+                isSignInOnProcess: false,
                 personalInfo: action.payload
             }
         }
-        case 'AUTH_LOGOUT': {
+        case 'LOGOUT_PROCESS': {
+            return {
+                ...state,
+                isLogoutOnProcess: true,
+            }
+        }
+        case 'LOGOUT_END': {
             return {
                 ...state,
                 isLoggedIn: false,
+                isLogoutOnProcess: false,
                 personalInfo: {}
             }
         }

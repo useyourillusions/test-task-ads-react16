@@ -3,7 +3,7 @@ import env from '../environment';
 
 const interceptorAxios = () => {
     const instance = axios.create({baseURL: `${env.api.uri}:${env.api.port}/`});
-    const token = localStorage.getItem('token');
+    const token = JSON.parse(localStorage.getItem('token'));
 
     instance.interceptors.request.use(config => {
         const isAuthNeededForUserData = config.url.indexOf(env.apiRoutes.user) >= 0;
@@ -14,12 +14,18 @@ const interceptorAxios = () => {
         const isAuthNeededForComments = config.url.indexOf(env.apiRoutes.comments) >= 0 &&
             ['post', 'put', 'delete'].indexOf(config.method) >= 0;
 
+        const isRefreshNeeded = config.url.indexOf(env.apiRoutes.refreshToken) >= 0;
+        const isLogout = config.url.indexOf(env.apiRoutes.logout) >= 0;
+
         if (
             isAuthNeededForUserData ||
             isAuthNeededForAd ||
             isAuthNeededForComments
         ) {
-            config.headers['Authorization'] = 'Bearer ' + token;
+            config.headers['Authorization'] = 'Bearer ' + token.accessToken;
+
+        } else if ((isRefreshNeeded || isLogout) && token.refreshToken) {
+            config.data = { refreshToken: token.refreshToken };
         }
 
         return config;
@@ -32,8 +38,7 @@ const interceptorAxios = () => {
                 res.data.content &&
                 res.data.content.token
             ) {
-                localStorage.setItem('token', res.data.content.token);
-                delete res.data.content.token;
+                localStorage.setItem('token', JSON.stringify(res.data.content.token));
             }
 
             return res;
@@ -77,6 +82,14 @@ const http = {
 
     removeComment(id = '') {
         return interceptorAxios().delete(`${env.apiRoutes.comments}/${id}`);
+    },
+
+    refreshToken() {
+        return interceptorAxios().post(env.apiRoutes.refreshToken);
+    },
+
+    logout() {
+        return interceptorAxios().post(env.apiRoutes.logout);
     }
 };
 

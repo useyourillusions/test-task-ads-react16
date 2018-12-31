@@ -11,7 +11,9 @@ const environment = {
             register: 'api/register',
             signIn: 'api/sign-in',
             ads: 'api/ad',
-            comments: 'api/comments'
+            comments: 'api/comments',
+            refreshToken: 'api/refresh',
+            logout: 'api/logout'
         }
     },
 

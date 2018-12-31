@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
-import { authLogout } from '../../actions/AuthAction';
+import { proceedLogout } from '../../actions/AuthAction';
 import './HeaderComponent.css';
 
 const LoggedStatus = ({props}) => {
@@ -46,7 +46,7 @@ class HeaderComponent extends Component {
 
 const mapStateToProps = ({userData}) => ({userData});
 const mapDispatchToProps = dispatch => ({
-    logout: () => dispatch(authLogout())
+    logout: () => dispatch(proceedLogout())
 });
 
 export default withRouter(
