@@ -5,6 +5,10 @@ const User = require('../database/models/User');
 const loginRequired = async (req, res, next) => {
 
     if (!req.userId || !isObjectIdValid(req.userId)) {
+        if (req.isAccessJwtExpired) {
+            return responseSender(res, 401, 'Authentication failed.', { needRefresh: true });
+        }
+
         return responseSender(res, 401, 'Authentication failed.')
     }
 

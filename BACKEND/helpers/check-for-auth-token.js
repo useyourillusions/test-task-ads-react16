@@ -12,6 +12,9 @@ const checkForAuthToken = async (req, res, next) => {
 
         jwt.verify(token, env[env.mode]['jwtKey'], (err, decode) => {
             if (err) {
+                if (err.message === 'jwt expired') {
+                    req.isAccessJwtExpired = true;
+                }
                 return;
             }
             req.userId = decode.userId || null;

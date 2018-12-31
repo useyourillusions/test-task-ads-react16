@@ -22,6 +22,9 @@ const commentsHandlerPost = require('./routes/post/comments');
 const commentsHandlerPut = require('./routes/put/comments');
 const commentsHandlerDelete = require('./routes/delete/comments');
 
+const refreshHandlerPost = require('./routes/post/refresh');
+const logoutHandlerPost = require('./routes/post/logout');
+
 const app = express();
 
 mongoose.connect(env[env.mode]['dbUri'] + env[env.mode]['dbName'], {
@@ -65,6 +68,11 @@ app
     .put(loginRequired, commentsHandlerPut)
     .delete(loginRequired, commentsHandlerDelete);
 
+// Refresh token route
+app.post('/api/refresh', refreshHandlerPost);
+
+// Logout route
+app.post('/api/logout', logoutHandlerPost);
 
 app.use(wrongRouteHandler);
 app.listen(

@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    email:  {
+    email: {
         type: String,
         required: true,
         unique: true,
@@ -31,6 +31,10 @@ const UserSchema = new mongoose.Schema({
     photo: {
         type: String,
         default: 'https://dummyimage.com/300x300/000/ff7800.png'
+    },
+    proofOfRefresh: {
+        type: String,
+        default: ''
     }
 });
 
