@@ -1,0 +1,32 @@
+.s-new-ad {
+    padding: 80px 0 50px;
+    border: 1px solid;
+}
+
+.s-new-ad__inner {
+    text-align: center;
+}
+
+.f-advertisement__inner {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -20px;
+}
+
+.f-advertisement__inner-col {
+    width: 50%;
+    border: 1px solid #ddd;
+    padding: 0 20px;
+}
+
+.f-advertisement__label {
+    display: inline-block;
+    margin-bottom: 15px;
+    letter-spacing: 0.05em;
+    font-size: 18px;
+    cursor: text;
+}
+
+.f-advertisement__row {
+    margin-bottom: 30px;
+}

@@ -8,6 +8,7 @@ import './AuthComponent.css';
 class AuthComponent extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             userData: {
                 email: '',
@@ -15,11 +16,9 @@ class AuthComponent extends Component {
             },
         };
 
-        this.signInUser = this.signInUser.bind(this);
-        this.onFillInput = this.onFillInput.bind(this);
-        this.redirectIfSuccess = () => this.props.userData.isLoggedIn
-            ? <Redirect to="/" />
-            : null;
+        this.doAuth = this.doAuth.bind(this);
+        this.onInput = this.onInput.bind(this);
+        this.redirectIfSuccess = this.redirectIfSuccess.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -36,7 +35,13 @@ class AuthComponent extends Component {
         }
     }
 
-    signInUser(e) {
+    redirectIfSuccess() {
+        const from = this.props.location.state && this.props.location.state.from;
+
+        return this.props.userData.isLoggedIn ? <Redirect to={from || '/'} /> : null;
+    }
+
+    doAuth(e) {
         e.preventDefault();
 
         if (!this.state.userData.password || !this.state.userData.email) {
@@ -47,7 +52,7 @@ class AuthComponent extends Component {
         this.props.proceedSignIn(this.state.userData);
     }
 
-    onFillInput(e) {
+    onInput(e) {
         this.setState({
             userData: {
                 ...this.state.userData,
@@ -63,7 +68,7 @@ class AuthComponent extends Component {
                 <div className="container">
                     <form action="#"
                           className={`f-default f-auth${this.props.userData.isSignInOnProcess ? ' _sending' : ''}`}
-                          onSubmit={this.signInUser}
+                          onSubmit={this.doAuth}
                           noValidate>
                         <div className="f-default__row">
                             <input type="email"
@@ -71,7 +76,7 @@ class AuthComponent extends Component {
                                    placeholder="Email"
                                    className="f-default__field"
                                    value={this.state.userData.email}
-                                   onChange={this.onFillInput} />
+                                   onChange={this.onInput} />
                         </div>
                         <div className="f-default__row">
                             <input type="password"
@@ -79,10 +84,10 @@ class AuthComponent extends Component {
                                    placeholder="Password"
                                    className="f-default__field"
                                    value={this.state.userData.password}
-                                   onChange={this.onFillInput} />
+                                   onChange={this.onInput} />
                         </div>
                         <button type="submit"
-                                className="f-default__btn"
+                                className="btn-default f-comment__btn"
                                 disabled={this.props.userData.isSignInOnProcess}>Sign In</button>
                     </form>
                 </div>
@@ -91,7 +96,7 @@ class AuthComponent extends Component {
     }
 }
 
-const mapStateToProps = ({userData, redirect}) => ({userData, redirect});
+const mapStateToProps = ({userData}) => ({userData});
 const mapDispatchToProps = dispatch => ({
     proceedSignIn: data => dispatch(proceedSignIn(data))
 });

@@ -6,6 +6,7 @@ import './RegisterComponent.css';
 class RegisterComponent extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             isFormSending: false,
             user: {
@@ -17,11 +18,11 @@ class RegisterComponent extends Component {
             },
         };
 
-        this.registerUser = this.registerUser.bind(this);
-        this.onFillInput = this.onFillInput.bind(this);
+        this.doRegistration = this.doRegistration.bind(this);
+        this.onInput = this.onInput.bind(this);
     }
 
-    registerUser(e) {
+    doRegistration(e) {
         e.preventDefault();
         const {passConf, ...dataToSend} = this.state.user;
 
@@ -37,29 +38,28 @@ class RegisterComponent extends Component {
             isFormSending: true
         });
 
-        http.register(dataToSend)
-            .then(
-                () => {
-                    this.setState({
-                        isFormSending: false,
-                        user: {
-                            firstName: '',
-                            lastName: '',
-                            email: '',
-                            password: '',
-                            passConf: ''
-                        }
-                    });
-                    this.props.history.push(`/sign-in`);
-                },
-                err => {
-                    console.log(errorHandler(err));
-                    this.setState({isFormSending: false});
-                }
-            )
+        http.register(dataToSend).then(
+            () => {
+                this.setState({
+                    isFormSending: false,
+                    user: {
+                        firstName: '',
+                        lastName: '',
+                        email: '',
+                        password: '',
+                        passConf: ''
+                    }
+                });
+                this.props.history.push(`/sign-in`);
+            },
+            err => {
+                this.setState({isFormSending: false});
+                errorHandler(err).then(res => console.log(res));
+            }
+        )
     }
 
-    onFillInput(e) {
+    onInput(e) {
         this.setState({
             user: {
                 ...this.state.user,
@@ -74,7 +74,7 @@ class RegisterComponent extends Component {
                 <div className="container">
                     <form action="#"
                           className={`f-default f-auth ${this.state.isFormSending ? '_sending' : ''}`}
-                          onSubmit={this.registerUser}
+                          onSubmit={this.doRegistration}
                           noValidate>
                         <h4 className="f-default__title f-comment__title">Fill your data below:</h4>
                         <div className="f-default__row">
@@ -83,7 +83,8 @@ class RegisterComponent extends Component {
                                    placeholder="First name"
                                    className="f-default__field"
                                    value={this.state.user.firstName}
-                                   onChange={this.onFillInput} />
+                                   onChange={this.onInput}
+                            />
                         </div>
                         <div className="f-default__row">
                             <input type="text"
@@ -91,7 +92,7 @@ class RegisterComponent extends Component {
                                    placeholder="Last name"
                                    className="f-default__field"
                                    value={this.state.user.lastName}
-                                   onChange={this.onFillInput} />
+                                   onChange={this.onInput} />
                         </div>
                         <div className="f-default__row">
                             <input type="email"
@@ -99,7 +100,7 @@ class RegisterComponent extends Component {
                                    placeholder="Email"
                                    className="f-default__field"
                                    value={this.state.user.email}
-                                   onChange={this.onFillInput} />
+                                   onChange={this.onInput} />
                         </div>
                         <div className="f-default__row">
                             <input type="password"
@@ -107,7 +108,7 @@ class RegisterComponent extends Component {
                                    placeholder="Password"
                                    className="f-default__field"
                                    value={this.state.user.password}
-                                   onChange={this.onFillInput} />
+                                   onChange={this.onInput} />
                         </div>
                         <div className="f-default__row">
                             <input type="password"
@@ -115,10 +116,10 @@ class RegisterComponent extends Component {
                                    placeholder="Password confirmation"
                                    className="f-default__field"
                                    value={this.state.user.passConf}
-                                   onChange={this.onFillInput} />
+                                   onChange={this.onInput} />
                         </div>
                         <button type="submit"
-                                className="f-default__btn"
+                                className="btn-default f-comment__btn"
                                 disabled={this.state.isFormSending}>Register</button>
                     </form>
                 </div>

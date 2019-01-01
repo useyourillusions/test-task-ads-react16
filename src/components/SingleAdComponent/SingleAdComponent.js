@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { getAd } from '../../actions/SingleAdAction';
 import CommentAreaComponent from '../CommentAreaComponent/CommentAreaComponent';
-import NewCommentComponent from '../NewCommentComponent/NewComentComponent'
+import NewCommentComponent from '../NewCommentComponent/NewCommentComponent'
 import PropTypes from 'prop-types';
 import './SingleAdComponent.css';
 
@@ -47,10 +47,8 @@ const SingleAd = ({singleAd}) => {
             <div className="container">
                 {
                     singleAd.isLoading
-                        ?
-                        <h3 style={{textAlign: 'center'}}>Loading...</h3>
-                        :
-                        <div className="b-ad">
+                        ? <h3 style={{textAlign: 'center'}}>Loading...</h3>
+                        : <div className="b-ad">
                             <h2 className="b-ad__title">{ad.title}</h2>
                             <img src={ad.img}
                                  className="b-ad__img"
@@ -71,7 +69,7 @@ class SingleAdComponent extends Component {
 
     render() {
         return (
-            <div>
+            <Fragment>
                 <SingleAd singleAd={this.props.singleAd} />
                 <section className="s-comments">
                     <div className="container">
@@ -84,7 +82,7 @@ class SingleAdComponent extends Component {
                         </div>
                     </div>
                 </section>
-            </div>
+            </Fragment>
         )
     }
 }

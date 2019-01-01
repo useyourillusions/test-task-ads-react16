@@ -29,11 +29,20 @@ class HomeComponent extends Component {
                             this.props.allAds.data.map(item => (
                                 <li className="l-ads__item" key={item._id}>
                                     <NavLink to={`ad/${item._id}`} className="l-ads__item-img-link">
-                                        <img src={item.img} className="l-ads__item-img" alt={item.title} />
+                                        <img src={item.img}
+                                             className="l-ads__item-img"
+                                             alt={item.title} />
                                     </NavLink>
-                                    <h4 className="l-ads__item-title">{item.title}</h4>
-                                    <p className="l-ads__item-text">{item.text}</p>
-                                    <NavLink to={`ad/${item._id}`} className="l-ads__item-link">Read more</NavLink>
+                                    <h4 className="l-ads__item-title">
+                                        {item.title}
+                                    </h4>
+                                    <p className="l-ads__item-text">
+                                        {item.text}
+                                    </p>
+                                    <NavLink to={`ad/${item._id}`}
+                                             className="l-ads__item-link">
+                                        Read more
+                                    </NavLink>
                                 </li>
                             ))
                         }

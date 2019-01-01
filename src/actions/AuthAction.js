@@ -1,6 +1,7 @@
 import errorHandler from '../helpers/httpErrorHandler';
 import http from '../helpers/axiosCustomInstance';
 
+
 const authProcess = bool => ({
     type: 'SIGN-IN_PROCESS',
     payload: bool
@@ -16,25 +17,25 @@ const logoutProcess = bool => ({
     payload: bool
 });
 
-const logoutFinish = () => ({
+const logoutEnd = () => ({
     type: 'LOGOUT_END'
 });
 
-const proceedSignIn = dataToSend => (
+
+const proceedSignIn = formSignInData => (
     dispatch => {
         dispatch(authProcess(true));
 
-        http.signIn(dataToSend)
-            .then(
-                res => {
-                    console.log(res);
-                    const user = res.data.content.user;
-                    dispatch(authSuccess(user));
-                },
-                err => {
-                    dispatch(authProcess(false));
-                    errorHandler(err).then(res => console.log(res));
-                }
+        http.signIn(formSignInData).then(
+            res => {
+                console.log(res);
+                const userData = res.data.content.user;
+                dispatch(authSuccess(userData));
+            },
+            err => {
+                dispatch(authProcess(false));
+                errorHandler(err).then(res => console.log(res));
+            }
         );
     }
 );
@@ -50,16 +51,40 @@ const proceedLogout = () => (
                 },
                 err => {
                     console.log(err);
-                }
-            )
+                })
             .finally(
                 () => {
                     localStorage.removeItem('token');
-                    dispatch(logoutFinish());
+                    dispatch(logoutEnd());
                 }
             );
     }
 );
 
+const getUserData = () => (
+    dispatch => {
+        http.getUserData().then(
+            res => {
+                console.log(res);
+                const userData = res.data.content;
+                dispatch(authSuccess(userData));
+            },
+            err => {
+                errorHandler(err).then(
+                    res => {
+                        console.log(res);
 
-export { authSuccess, proceedSignIn, proceedLogout };
+                        if (res.code === 200) {
+                            getUserData()(dispatch);
+                        } else {
+                            dispatch(proceedLogout());
+                        }
+                    }
+                );
+            }
+        );
+    }
+);
+
+
+export { authSuccess, proceedSignIn, proceedLogout, getUserData };

@@ -10,7 +10,7 @@ class NewCommentComponent extends Component {
             newComment: ''
         };
         this.onSendComment = this.onSendComment.bind(this);
-        this.onWriteComment = this.onWriteComment.bind(this);
+        this.onInput = this.onInput.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -31,7 +31,7 @@ class NewCommentComponent extends Component {
         this.props.sendComment(comment);
     }
 
-    onWriteComment(e) {
+    onInput(e) {
         this.setState({
             newComment: e.target.value
         });
@@ -40,23 +40,22 @@ class NewCommentComponent extends Component {
     render() {
         return (
             this.props.userData.isLoggedIn
-            ?
-            <form action="#"
+            ? <form action="#"
                   className={`f-default f-comment${this.props.commentsProcessing.isSending ? ' _sending' : ''}`}
                   onSubmit={this.onSendComment}>
                 <h4 className="f-default__title f-comment__title">Write a new comment</h4>
                 <textarea name="comment"
                           className="f-comment__area"
                           value={this.state.newComment}
-                          onChange={this.onWriteComment}
+                          onChange={this.onInput}
                           rows="10"/>
                 <button type="submit"
-                        className="f-default__btn f-comment__btn"
-                        disabled={this.props.commentsProcessing.isSending}>Send
+                        className="btn-default f-comment__btn"
+                        disabled={this.props.commentsProcessing.isSending}>
+                    Send
                 </button>
             </form>
-            :
-            null
+            : null
         );
     }
 }

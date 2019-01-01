@@ -72,6 +72,10 @@ const http = {
         }
     },
 
+    postNewAd(body = {}) {
+        return interceptorAxios().post(env.apiRoutes.ads, body);
+    },
+
     sendComment(body = {}) {
         return interceptorAxios().post(env.apiRoutes.comments, body)
     },
