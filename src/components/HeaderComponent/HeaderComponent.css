@@ -1,18 +1,17 @@
 .header {
     width: 100%;
-    border: 1px solid;
     position: fixed;
     left: 0;
     top: 0;
     z-index: 100;
-    background-color: #f9f9f9;
+    border-bottom: 1px solid #37313b;
+    background-color: rgba(255,255,255, .4);
 }
 
 .header__nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ddd;
     height: 50px;
     text-align: right;
 }
@@ -37,10 +36,10 @@
 .header__user-img {
     width: 30px;
     height: 30px;
+    margin-right: 10px;
+    vertical-align: middle;
     object-fit: cover;
     border-radius: 50%;
-    vertical-align: middle;
-    margin-right: 10px;
 }
 
 .header__user-name {

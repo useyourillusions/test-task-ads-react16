@@ -4,10 +4,9 @@
 }
 
 
-
-
 .b-ad {
-    border: 1px solid #ddd;
+    background-color: var(--item-bg);
+    padding: 30px 20px 20px;
 }
 
 .b-ad__title {

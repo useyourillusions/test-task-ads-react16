@@ -10,6 +10,14 @@ class HomeComponent extends Component {
         this.props.getAllAds();
     }
 
+    onMouse(e) {
+        const x = e.pageX - e.currentTarget.offsetLeft;
+        const y = e.pageY - e.currentTarget.offsetTop;
+
+        e.currentTarget.style.setProperty('--x', `${ x }px`);
+        e.currentTarget.style.setProperty('--y', `${ y }px`);
+    }
+
     render() {
         if (this.props.allAds.isLoading) {
             return (
@@ -40,9 +48,33 @@ class HomeComponent extends Component {
                                         {item.text}
                                     </p>
                                     <NavLink to={`ad/${item._id}`}
-                                             className="l-ads__item-link">
-                                        Read more
+                                             className="l-ads__item-link"
+                                             onMouseMove={this.onMouse}
+                                             style={{'--x':'0px', '--y':'0px'}}>
+                                        <span>Read more</span>
                                     </NavLink>
+                                    <div className="l-ads__item-info">
+                                        <div className="l-ads__item-user">
+                                            <img className="l-ads__item-user-img"
+                                                 src="https://dummyimage.com/300x300/000/ff7800.png"
+                                                 alt="" />
+                                            <span className="l-ads__item-user-name">Yura Aliakseyeu posted this at 10.10.2018</span>
+                                        </div>
+                                        <div className="l-ads__item-statistics">
+                                            <div className="l-ads__item-statistics-icon" title="Views">
+                                                <svg className="svg-watched" version="1.2">
+                                                    <use xlinkHref="#svg-watched"/>
+                                                </svg>
+                                                <span>0</span>
+                                            </div>
+                                            <div className="l-ads__item-statistics-icon" title="Comments">
+                                                <svg className="svg-comments" version="1.2">
+                                                    <use xlinkHref="#svg-comments"/>
+                                                </svg>
+                                                <span>0</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </li>
                             ))
                         }

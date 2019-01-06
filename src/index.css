@@ -10,15 +10,24 @@ html {
     height: 100%;
 }
 
+html:root {
+    --bg-negative-padding: 5px;
+    --text-color-dark: #191a2b;
+    --text-color-light: #ebecee;
+    --item-bg: rgba(255, 255, 255, .7);
+    --border-color-light: #ebecee;
+}
+
 body {
     margin: 0;
     padding: 0;
+    min-width: 320px;
+    min-height: 100%;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 1.4rem;
     font-weight: 400;
-    background-color: #f9f9f9;
-    min-width: 320px;
-    height: 100%;
+    //background-color: #fff;
+    color: #191a2b;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     -moz-osx-font-smoothing: grayscale;
@@ -28,6 +37,26 @@ body {
     -webkit-focus-ring-color: rgba(255, 255, 255, 0);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    background-image: linear-gradient(to right, #64B5F6 50%, #2196F3 100%);
+}
+
+body::before,
+body::after {
+    //content: '';
+    width: calc(100% + var(--bg-negative-padding) * 2);
+    height: calc(100vh + var(--bg-negative-padding) * 2);
+    position: fixed;
+    top: calc(-1 * var(--bg-negative-padding));
+    left: calc(-1 * var(--bg-negative-padding));
+    filter: blur(5px);
+}
+
+body::before {
+    background-image: linear-gradient(to left, rgba(156, 210, 186, 0.7) 0%, rgba(218, 201, 173, 1) 100%);
+}
+
+body::after {
+    background-image: linear-gradient(to top, rgba(148, 83, 109, 1) 0%, rgba(127, 63, 134, 0.6) 50%, rgba(0, 0, 0, 0) 100%);
 }
 
 img {
