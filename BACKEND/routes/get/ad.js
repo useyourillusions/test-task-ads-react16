@@ -5,58 +5,92 @@ const responseSender = require('../../helpers/response-sender');
 
 const extendCommentsWithAuthor = comments =>
     comments.map(async item => {
-        const commentJson = item.toJSON();
+        const commentObj = item.toObject();
 
         try {
             const author = await User
                 .findOne({_id: item.userId})
-                .select('-_id -password -__v');
+                .select('-_id -password -proofOfRefresh -__v');
 
-            commentJson['author'] = author.toJSON();
+            commentObj['author'] = author.toObject();
 
         } catch (err) {
-            commentJson['author'] = null;
+            commentObj['author'] = null;
         }
 
-        delete commentJson['userId'];
+        delete commentObj['userId'];
 
-        return commentJson;
+        return commentObj;
     });
+
+const extendAdsWithAuthor = (allAuthors, knownAuthors) =>
+    (ad) => {
+        const adObj = ad.toObject();
+
+        if (!knownAuthors[adObj.userId]) {
+            const authorSoughtFor = allAuthors.filter(a => a._id.equals(adObj.userId));
+            const authorObj = authorSoughtFor[0].toObject();
+
+            delete authorObj._id;
+            knownAuthors[adObj.userId] = authorObj;
+            adObj['author'] = authorObj;
+            console.log(adObj);
+
+        } else {
+            adObj['author'] = knownAuthors[adObj.userId];
+        }
+
+        return adObj;
+    };
+
+const addAuthors = async source => {
+    const allAuthors = await User
+        .find()
+        .select('-password -proofOfRefresh -__v');
+    const knownAuthors = {};
+
+    if (source.length) {
+        return source.map(extendAdsWithAuthor(allAuthors, knownAuthors));
+    }
+};
 
 
 const adHandlerGet = async (req, res) => {
     if (req.query.id) {
 
         try {
-            const ads = await Ad
-                .findOne({_id: req.query.id})
+            const singleAd = await Ad
+                .findOneAndUpdate({_id: req.query.id}, { $inc: { views: 1 }})
                 .select('-_id -userId -__v');
 
-            const dataToSend = ads.toJSON();
+            singleAd['views'] += 1;
+
+            const singleAdToSend = singleAd.toJSON();
             const relatedComments = await Comment
                 .find({adId: req.query.id})
                 .select('-adId -__v');
 
-            dataToSend['comments'] = await Promise.all(
+            singleAdToSend['comments'] = await Promise.all(
                 extendCommentsWithAuthor(relatedComments)
             );
 
             res
                 .status(200)
-                .json(dataToSend);
+                .json(singleAdToSend);
 
         } catch (err) {
             responseSender(res, 404, 'Advertisement not found!');
         }
 
     } else {
-        const dataToSend = await Ad
+        let adsToSend = await Ad
             .find()
-            .select('-userId -__v');
+            .select('-__v');
 
-            res
-                .status(200)
-                .json(dataToSend);
+        adsToSend = await addAuthors(adsToSend);
+        res
+            .status(200)
+            .json(adsToSend);
     }
 };
 

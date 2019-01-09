@@ -17,6 +17,14 @@ const AdvertisementSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    views: {
+        type: Number,
+        default: 0
+    },
+    commentsAmount: {
+        type: Number,
+        default: 0
+    },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
