@@ -24,7 +24,7 @@ const extendCommentsWithAuthor = comments =>
     });
 
 const extendAdsWithAuthor = (allAuthors, knownAuthors) =>
-    (ad) => {
+    ad => {
         const adObj = ad.toObject();
 
         if (!knownAuthors[adObj.userId]) {
@@ -34,7 +34,6 @@ const extendAdsWithAuthor = (allAuthors, knownAuthors) =>
             delete authorObj._id;
             knownAuthors[adObj.userId] = authorObj;
             adObj['author'] = authorObj;
-            console.log(adObj);
 
         } else {
             adObj['author'] = knownAuthors[adObj.userId];
